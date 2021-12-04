@@ -1,0 +1,44 @@
+.wrapper {
+    @apply
+        max-h-80
+        overflow-hidden
+        relative
+        transition-all;
+}
+
+.wrapper:before {
+    content: '';
+    @apply
+        absolute
+        left-0
+        right-0
+        bottom-0
+        h-1/2
+        transition-opacity;
+    background-image: linear-gradient(to bottom, transparent, #FFFFFF 60%);
+}
+
+.open {
+    max-height: 100vh;
+}
+
+.open:before {
+    @apply opacity-0;
+}
+
+.expand {
+    @apply
+        text-default
+        font-bold
+        block
+        absolute
+        bottom-4
+        left-0
+        right-0
+        text-center
+        transition-opacity;
+}
+
+.open .expand {
+    @apply opacity-0;
+}
