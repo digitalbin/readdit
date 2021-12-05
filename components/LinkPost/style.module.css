@@ -5,12 +5,15 @@
         overflow-hidden
         relative
         whitespace-nowrap
-        mb-6;
-        max-width: 75%;
+        mb-6
+        text-tiny
+        underline;
+        max-width: 50%;
 }
 
+
+/* Behövs denna? 👇 */
 .link:before {
     content: '';
-    @apply absolute inset-0 border-b border-black;
-    /* border-bottom: 1px solid black; */
+    @apply inset-0 border-b border-black;
 }

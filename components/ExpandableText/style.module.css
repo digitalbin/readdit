@@ -1,6 +1,6 @@
 .wrapper {
     @apply
-        max-h-80
+        max-h-40
         overflow-hidden
         relative
         transition-all;

@@ -15,20 +15,22 @@ module.exports = {
       inverse: '#111',
     },
     fontSize: {
-      tall: ['18px', '135%'],
+      tall: ['18px', '140%'],
       default: ['15px', '140%'],
       tiny: ['12px', '150%'],
+      labelTiny: ['12px', '100%']
     },
     fontWeight: {
       regular: '400',
-      bold: '700',
+      semibold: '500',
+      bold: '600',
     },
     borderColor: {
-      DEFAULT: '#E1E1E1',
+      DEFAULT: '#f1f2f3',
       black: '#111',
     },
     borderRadius: {
-      DEFAULT: '1rem',
+      DEFAULT: '1.5rem',
       full: '9999px'
     }
   },
