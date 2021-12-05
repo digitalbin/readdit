@@ -1,0 +1,20 @@
+.iframeWrapper {
+    @apply
+        relative
+        h-0
+        overflow-hidden;
+
+    padding-bottom: 56.25%;
+    padding-top: 30px;
+}
+
+.iframeWrapper iframe,
+.iframeWrapper object,
+.iframeWrapper embed {
+    @apply
+        absolute
+        inset-0
+        /* w-full */
+        h-full
+        mx-auto;
+}

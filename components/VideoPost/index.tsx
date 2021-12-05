@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { InView } from 'react-intersection-observer';
 import type { PostData } from 'types/reddit';
+import s from './style.module.css';
 
 const Iframe = ({
     src,
@@ -11,12 +12,13 @@ const Iframe = ({
     width?: number;
     height?: number;
 }) => (
-    <iframe
-        src={src}
-        className="overflow-hidden"
-        width={width}
-        height={height}
-    />
+    <div className={s.iframeWrapper}>
+        <iframe
+            src={src}
+            width={width}
+            height={height}
+        />
+    </div>
 );
 
 const Video = ({ src }: { src: string }) => {
@@ -37,7 +39,7 @@ const Video = ({ src }: { src: string }) => {
 };
 
 const VideoPost = (props: PostData) => {
-    const { media, preview, secure_media_embed } = props;
+    const { media, preview, secure_media_embed, url_overridden_by_dest } = props;
 
     const videoUrl =
         media?.reddit_video?.fallback_url ||
@@ -45,9 +47,6 @@ const VideoPost = (props: PostData) => {
     const iframe = secure_media_embed?.media_domain_url;
     const width = secure_media_embed?.width;
     const height = secure_media_embed?.height;
-    
-    // const isYouTube = media?.type === 'youtube.com';
-    // console.log(isYouTube);
     
     return (
         <div className="-mx-6">
