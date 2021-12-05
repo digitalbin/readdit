@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { InView } from 'react-intersection-observer';
-import type { PostData } from 'types/reddit';
+import type { IPostData } from 'types/post';
 import s from './style.module.css';
 
 const Iframe = ({
@@ -33,13 +33,13 @@ const Video = ({ src }: { src: string }) => {
 
     return (
         <InView as="div" onChange={handleInview} threshold={.8}>
-            <video ref={ref} loop preload="auto" muted className="mx-auto" style={{maxHeight: "500px"}} src={src} />
+            <video ref={ref} loop preload="auto" muted className="mx-auto" style={{ maxHeight: 500 }} src={src} />
         </InView>
     );
 };
 
-const VideoPost = (props: PostData) => {
-    const { media, preview, secure_media_embed, url_overridden_by_dest } = props;
+const VideoPost = (props: IPostData) => {
+    const { media, preview, secure_media_embed } = props;
 
     const videoUrl =
         media?.reddit_video?.fallback_url ||
@@ -49,7 +49,7 @@ const VideoPost = (props: PostData) => {
     const height = secure_media_embed?.height;
     
     return (
-        <div className="-mx-6 rounded">
+        <div className="-mx-6">
             {videoUrl ? (
                 <Video src={videoUrl} />
             ) : iframe ? (

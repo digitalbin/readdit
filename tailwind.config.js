@@ -28,6 +28,7 @@ module.exports = {
     borderColor: {
       DEFAULT: '#f1f2f3',
       black: '#111',
+      transparent: 'transparent',
     },
     borderRadius: {
       DEFAULT: '1.5rem',

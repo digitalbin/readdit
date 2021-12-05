@@ -5,12 +5,13 @@ import fetch from 'isomorphic-unfetch';
 import Link from 'next/link';
 import type { NextPage, GetServerSideProps } from 'next';
 import { timeSince, kFormatter } from '@utils/index';
-import type { IPost, PostData } from 'types/reddit';
 import ExpandableText from '@components/ExpandableText';
 import VideoPost from '@components/VideoPost';
 import ImagePost from '@components/ImagePost';
 import LinkPost from '@components/LinkPost';
 import classNames from 'classnames';
+import type { IPost, IPostData } from 'types/post';
+import type { IComment, ICommentData } from 'types/comment';
 
 function getPostType(hint: string) {
     switch (hint) {
@@ -27,7 +28,7 @@ function getPostType(hint: string) {
 
 const SubredditIcons = new Map();
 
-const Post = (props: PostData) => {
+const Post = (props: IPostData) => {
     const {
         crosspost_parent,
         crosspost_parent_list = [],
@@ -36,7 +37,6 @@ const Post = (props: PostData) => {
         selftext,
         num_comments,
         ups,
-        id,
         permalink,
         title,
         post_hint = '',
@@ -74,12 +74,9 @@ const Post = (props: PostData) => {
     const upvotes = kFormatter(ups);
 
     return (
-        <div ref={ref}>
+        <article ref={ref} className="p-6">
             {isCrosspost ? (
-                <div
-                    key={id}
-                    className="p-6 mb-6 rounded border-2 border-default"
-                >
+                <>
                     <div className="text-default mb-4">
                         <Link href={subreddit}>
                             <a className="font-bold text-tiny flex items-center">
@@ -113,12 +110,9 @@ const Post = (props: PostData) => {
                         <span className="mr-4">{comments} comments</span>
                         {upvotes} upvotes
                     </div>
-                </div>
+                </>
             ) : (
-                <article
-                    key={id}
-                    className="p-6 mb-6 rounded border-2 border-default"
-                >
+                <>
                     <div className="text-default mb-4">
                         <Link href={subreddit}>
                             <a className="font-bold text-tiny flex items-center">
@@ -143,7 +137,9 @@ const Post = (props: PostData) => {
                     <Link href={permalink}>
                         <a className="mb-6 block">
                             <h3
-                                className={classNames({ 'text-tiny': isCrosspost })}
+                                className={classNames({
+                                    'text-tiny': isCrosspost,
+                                })}
                             >
                                 {title}
                             </h3>
@@ -157,28 +153,53 @@ const Post = (props: PostData) => {
                         <span className="mr-4">{comments} comments</span>
                         {upvotes} upvotes
                     </div>
-                </article>
+                </>
             )}
-        </div>
+        </article>
     );
 };
 
-interface IProps {
-    kind: string;
-    data: {
-        children: IPost[];
+interface IRootObject {
+    posts: {
+        data: {
+            children: IPost[];
+        };
+    };
+    comments?: {
+        data: {
+            children: IComment[];
+        };
     };
 }
 
-const Home: NextPage<IProps> = (props) => {
+const Home: NextPage<IRootObject> = (props) => {
+    const { posts, comments } = props;
+    const hasComments = Boolean(comments);
+    const postClass = classNames('mb-6 rounded border-2', {
+        'border-transparent': hasComments,
+        'm-6': !hasComments,
+    });
+    console.log(comments);
+    
     return (
-        <main className="p-4">
-            {props.kind === 'Listing' &&
-                props.data.children.map((post: IPost) => (
-                    <section key={post.data.id}>
-                        <Post {...post.data} />
-                    </section>
-                ))}
+        // <main className={classNames({ 'p-4': !hasComments })}>
+        <main>
+            {posts?.data?.children?.map((post: IPost) => (
+                <section key={post.data.id} className={postClass}>
+                    <Post {...post.data} />
+                </section>
+            ))}
+            {hasComments && (
+                <div className="p-4">
+                    {comments?.data.children.map((comment: IComment) => (
+                        <div key={comment.data.id} className="mb-6">
+                            <div className="border-2 rounded-tr rounded-b p-6">
+                                <p>{comment.data.body}</p>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            )}
         </main>
     );
 };
@@ -188,10 +209,19 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const res = await fetch(`https://www.reddit.com${resolvedUrl}.json`).then(
         (res) => res.json(),
     );
-    // console.log(Array.isArray(res));
+    if (Array.isArray(res)) {
+        return {
+            props: {
+                posts: res[0],
+                comments: res[1],
+            },
+        };
+    }
 
     return {
-        props: res,
+        props: {
+            posts: res,
+        },
     };
 };
 
