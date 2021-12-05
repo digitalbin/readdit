@@ -64,39 +64,10 @@ const Post = (props: PostData) => {
     const upvotes = kFormatter(ups);
 
     return isCrosspost ? (
-        <>
-            <div className="flex items-center justify-between px-6 pt-4 pb-6 border border-b-0 rounded-t -mb-2">
-                <h3 className="text-default text-subtle">{title}</h3>
-                <span className="text-subtle flex items-center">
-                    {subreddit_name_prefixed}
-                    <svg
-                        className="w-7 h-7 ml-2"
-                        stroke="currentColor"
-                        fill="currentColor"
-                        strokeWidth="0"
-                        version="1"
-                        viewBox="0 0 48 48"
-                        enableBackground="new 0 0 48 48"
-                        xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <g fill="currentColor">
-                            <path d="M13,13c0-3.3,2.7-6,6-6h10c3.3,0,6,2.7,6,6h4c0-5.5-4.5-10-10-10H19C13.5,3,9,7.5,9,13v11.2h4V13z"></path>
-                            <polygon points="4.6,22 11,30.4 17.4,22"></polygon>
-                        </g>
-                        <g fill="currentColor">
-                            <path d="M35,35c0,3.3-2.7,6-6,6H19c-3.3,0-6-2.7-6-6H9c0,5.5,4.5,10,10,10h10c5.5,0,10-4.5,10-10V23h-4V35z"></path>
-                            <polygon points="30.6,26 37,17.6 43.4,26"></polygon>
-                        </g>
-                    </svg>
-                </span>
-            </div>
-            <Post {...parentProps} />
-        </>
-    ) : (
-        <div key={id} className="p-6 mb-6 border border-default rounded">
+        <div key={id} className="p-6 mb-6 rounded border-2 border-default">
             <div className="text-default mb-4">
                 <Link href={subreddit}>
-                    <a className="font-bold flex items-center">
+                    <a className="font-bold text-tiny flex items-center">
                         {subredditIcon ? (
                           <img src={subredditIcon} alt={`Icon for ${subreddit}`} className="mr-4 w-8 h-8 bg-subtle rounded-full flex-none" />
                         ) : (
@@ -116,11 +87,43 @@ const Post = (props: PostData) => {
                     <h3>{title}</h3>
                 </a>
             </Link>
+            <div className="bg-subtle rounded">
+                <Post {...parentProps} />
+            </div>
+            <div className="text-subtle text-tiny mt-6">
+                <span className="mr-4">{comments} comments</span>
+                {upvotes} upvotes
+            </div>
+        </div>
+    ) : (
+        <div key={id} className="p-6 mb-6 rounded border-2 border-default">
+            <div className="text-default mb-4">
+                <Link href={subreddit}>
+                    <a className="font-bold text-tiny flex items-center">
+                        {subredditIcon ? (
+                          <img src={subredditIcon} alt={`Icon for ${subreddit}`} className="mr-4 w-8 h-8 bg-subtle rounded-full flex-none" />
+                        ) : (
+                          <span className="mr-4 w-8 h-8 bg-subtle rounded-full flex-none" />
+                        )}
+                        <span className="overflow-ellipsis overflow-hidden">
+                            {subreddit_name_prefixed}
+                        </span>
+                        <span className="text-subtle font-regular flex-1 whitespace-nowrap">
+                            &nbsp;•&nbsp;{timeAgo}
+                        </span>
+                    </a>
+                </Link>
+            </div>
+            <Link href={permalink}>
+                <a className="mb-6 block">
+                    <h3 className={isCrosspost ? "text-tiny" : "text-tall"}>{title}</h3>
+                </a>
+            </Link>
             {postType === 'video' && <VideoPost {...props} />}
             {postType === 'image' && <ImagePost {...props} />}
             {postType === 'link' && <LinkPost {...props} />}
             {selftext && <ExpandableText {...props} />}
-            <div className="text-subtle mt-6">
+            <div className="text-subtle text-tiny mt-6">
                 <span className="mr-4">{comments} comments</span>
                 {upvotes} upvotes
             </div>
