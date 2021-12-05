@@ -11,10 +11,5 @@ body {
 }
 
 h3 {
-  @apply font-sans font-semibold text-tall subpixel-antialiased;
-}
-
-.container {
-  max-width: 650px;
-  margin: 0 auto;
+  @apply font-semibold text-tall;
 }
