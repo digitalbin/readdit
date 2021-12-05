@@ -352,7 +352,23 @@ export interface RedditVideo2 {
 }
 
 export interface Media {
-    reddit_video: RedditVideo2;
+    reddit_video?: RedditVideo2;
+    oembed?: {
+        author_name: string;
+        author_url: string;
+        height: number;
+        html: string;
+        provider_name: string;
+        provider_url: string;
+        thumbnail_height: number;
+        thumbnail_url: string;
+        thumbnail_width: number;
+        title: string;
+        type: string;
+        version: string;
+        width: number;
+    }
+    type?: string;
 }
 
 export interface Source {
@@ -594,6 +610,8 @@ export interface PostData {
     archived: boolean;
     no_follow: boolean;
     is_crosspostable: boolean;
+    crosspost_parent?: string;
+    crosspost_parent_list: PostData[];
     pinned: boolean;
     over_18: boolean;
     all_awardings: AllAwarding[];

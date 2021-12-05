@@ -24,7 +24,8 @@ module.exports = {
       bold: '700',
     },
     borderColor: {
-      DEFAULT: '#E1E1E1'
+      DEFAULT: '#E1E1E1',
+      black: '#111',
     },
     borderRadius: {
       DEFAULT: '1rem',
