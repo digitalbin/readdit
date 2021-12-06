@@ -13,7 +13,8 @@ module.exports = {
       default: '#fff',
       subtle: '#f1f2f3',
       inverse: '#111',
-      border: '#E1E1E1'
+      border: '#E1E1E1',
+      foreground: '#fafafa'
     },
     fontSize: {
       tall: ['18px', '140%'],
@@ -23,21 +24,24 @@ module.exports = {
     },
     fontWeight: {
       regular: '400',
-      semibold: '500',
       bold: '600',
     },
     borderColor: {
-      DEFAULT: '#E1E1E1',
+      DEFAULT: '#f1f2f3',
       black: '#111',
       transparent: 'transparent',
     },
     borderRadius: {
       DEFAULT: '1.5rem',
       full: '9999px'
-    }
+    },
+    maxWidth: {
+      lg: '600px',
+    },
   },
   variants: {
-    extend: {},
+    extend: {
+    },
   },
   plugins: [],
 }

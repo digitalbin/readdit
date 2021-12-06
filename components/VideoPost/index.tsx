@@ -33,7 +33,7 @@ const Video = ({ src }: { src: string }) => {
 
     return (
         <InView as="div" onChange={handleInview} threshold={.8}>
-            <video ref={ref} loop preload="auto" muted className="mx-auto" style={{ maxHeight: 500 }} src={src} />
+            <video ref={ref} loop preload="auto" muted className="mx-auto rounded" style={{ maxHeight: 500 }} src={src} />
         </InView>
     );
 };
@@ -49,7 +49,7 @@ const VideoPost = (props: IPostData) => {
     const height = secure_media_embed?.height;
     
     return (
-        <div className="-mx-6">
+        <div className="rounded">
             {videoUrl ? (
                 <Video src={videoUrl} />
             ) : iframe ? (

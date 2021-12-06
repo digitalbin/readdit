@@ -75,10 +75,10 @@ const Post = (props: IPostData) => {
     const upvotes = kFormatter(ups);
 
     return (
-        <article ref={ref} className="p-6">
+        <article ref={ref} className="p-6 -mb-px bg-default">
             {isCrosspost ? (
                 <>
-                    <div className="text-default mb-4">
+                    <div className="text-default mb-2">
                         <Link href={subreddit}>
                             <a className="font-bold text-tiny flex items-center">
                                 {subredditIcon ? (
@@ -104,7 +104,7 @@ const Post = (props: IPostData) => {
                             <h3>{title}</h3>
                         </a>
                     </Link>
-                    <div className="bg-subtle rounded">
+                    <div className="bg-subtle">
                         <Post {...parentProps} />
                     </div>
                     <div className="text-subtle text-tiny mt-6">
@@ -114,14 +114,14 @@ const Post = (props: IPostData) => {
                 </>
             ) : (
                 <>
-                    <div className="text-default mb-4">
+                    <div className="text-default mb-2">
                         <Link href={subreddit}>
                             <a className="font-bold text-tiny flex items-center">
                                 {subredditIcon ? (
                                     <img
                                         src={subredditIcon}
                                         alt={`Icon for ${subreddit}`}
-                                        className="mr-4 w-8 h-8 bg-subtle rounded-full flex-none"
+                                        className="mr-4 w-8 h-8 bg-subtle border rounded-full flex-none"
                                     />
                                 ) : (
                                     <span className="mr-4 w-8 h-8 bg-subtle rounded-full flex-none" />
@@ -137,13 +137,7 @@ const Post = (props: IPostData) => {
                     </div>
                     <Link href={permalink}>
                         <a className="mb-6 block">
-                            <h3
-                                className={classNames({
-                                    'text-tiny': isCrosspost,
-                                })}
-                            >
-                                {title}
-                            </h3>
+                            <h3 className="text-default">{title}</h3>
                         </a>
                     </Link>
                     {postType === 'video' && <VideoPost {...props} />}
@@ -176,9 +170,10 @@ interface IRootObject {
 const Home: NextPage<IRootObject> = (props) => {
     const { posts, comments } = props;
     const hasComments = Boolean(comments);
-    const postClass = classNames('mb-6 rounded border-2', {
+    //vrf har den här margin?
+    const postClass = classNames('border', {
         'border-transparent': hasComments,
-        'm-6': !hasComments,
+        // 'm-6': !hasComments,
     });
     console.log(comments);
     
