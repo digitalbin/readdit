@@ -13,6 +13,7 @@ module.exports = {
       default: '#fff',
       subtle: '#f1f2f3',
       inverse: '#111',
+      border: '#E1E1E1'
     },
     fontSize: {
       tall: ['18px', '140%'],
@@ -26,7 +27,7 @@ module.exports = {
       bold: '600',
     },
     borderColor: {
-      DEFAULT: '#f1f2f3',
+      DEFAULT: '#E1E1E1',
       black: '#111',
       transparent: 'transparent',
     },

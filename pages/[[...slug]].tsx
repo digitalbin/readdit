@@ -9,6 +9,7 @@ import ExpandableText from '@components/ExpandableText';
 import VideoPost from '@components/VideoPost';
 import ImagePost from '@components/ImagePost';
 import LinkPost from '@components/LinkPost';
+import Comment from '@components/Comment';
 import classNames from 'classnames';
 import type { IPost, IPostData } from 'types/post';
 import type { IComment, ICommentData } from 'types/comment';
@@ -191,12 +192,10 @@ const Home: NextPage<IRootObject> = (props) => {
             ))}
             {hasComments && (
                 <div className="p-4">
-                    {comments?.data.children.map((comment: IComment) => (
-                        <div key={comment.data.id} className="mb-6">
-                            <div className="border-2 rounded-tr rounded-b p-6">
-                                <p>{comment.data.body}</p>
-                            </div>
-                        </div>
+                    {comments?.data.children.map((comment: IComment, i) => (
+                        <ul key={comment.data.id}>
+                            <Comment {...comment.data} endThread={true} />
+                        </ul>
                     ))}
                 </div>
             )}
