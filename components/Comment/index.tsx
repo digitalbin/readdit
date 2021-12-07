@@ -1,11 +1,12 @@
 import { useState, useMemo, useCallback } from 'react';
 import he from 'he';
 import classNames from 'classnames';
+import Avatar from '@components/Avatar';
 import { ICommentData, IComment } from 'types/comment';
 import s from './style.module.css';
 
 interface CommentProps extends ICommentData {
-    endThread: boolean | undefined;
+    isLast: boolean | undefined;
 }
 
 const hexString = '0123456789abcdef';
@@ -35,7 +36,7 @@ const Comment = (props: CommentProps) => {
 
     const avatarGradient = useMemo(generateGrad, []);
 
-    const { body_html, author, endThread } = props;
+    const { body_html, author, isLast } = props;
     if (!body_html) return null;
     // Special "view more" item... TODO
     const replies = props?.replies?.data?.children.filter(
@@ -44,20 +45,21 @@ const Comment = (props: CommentProps) => {
     const hasReplies = replies && replies.length > 0;
 
     return (
-        <li>
+        <li
+            className={
+                classNames('relative', {
+                [s.thread]: isOpen && !isLast,
+            })}
+        >
             <div
-                className={classNames('flex mb-8 relative', {
-                    [s.thread]: endThread && hasReplies && isOpen,
+                className={
+                    classNames('flex mb-8 relative', {
+                    [s.thread]: isOpen && (!isLast || hasReplies),
+                    'filter grayscale': visited,
                 })}
             >
                 <button onClick={toggleOpen} className={s.threadbtn} />
-                <div
-                    className="w-8 h-8 rounded-full mr-2"
-                    style={{
-                        background: avatarGradient,
-                        filter: visited ? 'grayscale(1)' : undefined,
-                    }}
-                />
+                <Avatar type="user" name={author} />
                 <div className="bg-subtle rounded-tr rounded-b p-4 flex-1 overflow-hidden">
                     <div
                         className={classNames('text-tiny font-bold', {
@@ -79,7 +81,7 @@ const Comment = (props: CommentProps) => {
                     {replies.map((reply: IComment, i: number) => (
                         <Comment
                             {...reply.data}
-                            endThread={i === replies.length - 1}
+                            isLast={i === replies.length - 1}
                             key={reply.data.id}
                         />
                     ))}

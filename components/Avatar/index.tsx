@@ -1,0 +1,31 @@
+/* eslint-disable @next/next/no-img-element */
+import { FC } from 'react';
+import useSWRImmutable from 'swr/immutable';
+import { getSubredditIcon, getUserIcon } from '@requests/index';
+
+interface Props {
+    type: 'user' | 'subreddit';
+    name?: string;
+}
+
+const reqMap = {
+    user: getUserIcon,
+    subreddit: getSubredditIcon,
+}
+
+const Avatar: FC<Props> = ({ type, name }) => {
+    const { data: icon } = useSWRImmutable(name, reqMap[type]);
+    const prefix = type === 'user' ? 'u' : 'r'
+    return (
+        <figure className="mr-4 w-8 h-8 bg-subtle rounded-full overflow-hidden flex-none">
+            {icon && (
+                <img
+                    src={icon}
+                    alt={`Avatar for ${prefix}/${name}`}
+                />
+            )}
+        </figure>
+    );
+}
+
+export default Avatar;
