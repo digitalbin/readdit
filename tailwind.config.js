@@ -6,14 +6,13 @@ module.exports = {
   theme: {
     textColor: {
       default: '#111',
-      subtle: '#808080',
+      subtle: '#404040',
       inverse: '#fff',
     },
     backgroundColor: {
       default: '#fff',
-      subtle: '#f1f2f3',
+      subtle: '#eee',
       inverse: '#111',
-      border: '#E1E1E1',
       foreground: '#fafafa'
     },
     fontSize: {
@@ -27,7 +26,7 @@ module.exports = {
       bold: '600',
     },
     borderColor: {
-      DEFAULT: '#f1f2f3',
+      DEFAULT: '#eee',
       black: '#111',
       transparent: 'transparent',
     },
