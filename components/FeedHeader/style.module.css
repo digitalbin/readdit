@@ -1,0 +1,40 @@
+.header {
+    @apply
+        flex
+        items-center
+        justify-between
+        -top-px
+        sticky
+        bg-default
+        p-6
+        font-black
+        text-tall
+        -mb-px
+        border
+}
+
+.search {
+    @apply
+        bg-subtle
+        py-3
+        px-4
+        text-default
+        border-2
+        rounded-sm
+        outline-none
+        
+        hover:bg-default
+        
+        focus:outline-none
+        focus:border-primary
+        focus:ring-4
+        focus:ring-primary
+        focus:ring-opacity-30
+        focus:bg-default
+
+        transition-all
+        duration-200
+        ;
+
+    max-width: 190px;
+}

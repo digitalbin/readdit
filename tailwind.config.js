@@ -24,18 +24,24 @@ module.exports = {
     fontWeight: {
       regular: '400',
       bold: '600',
+      black: '800',
     },
     borderColor: {
       DEFAULT: '#eee',
       black: '#111',
       transparent: 'transparent',
+      primary: "#74FF66",
     },
     borderRadius: {
+      sm: '1rem',
       DEFAULT: '1.5rem',
       full: '9999px'
     },
     maxWidth: {
       lg: '600px',
+    },
+    ringColor: {
+      primary: "#74FF66",
     },
   },
   variants: {
