@@ -1,8 +1,6 @@
-/* eslint-disable @next/next/no-img-element */
-import { useEffect, useState } from 'react';
-import { useInView } from 'react-intersection-observer';
 import fetch from 'isomorphic-unfetch';
 import he from 'he';
+import classNames from 'classnames';
 import Link from 'next/link';
 import type { NextPage, GetServerSideProps } from 'next';
 import { timeSince, kFormatter } from '@utils/index';
@@ -11,7 +9,7 @@ import VideoPost from '@components/VideoPost';
 import ImagePost from '@components/ImagePost';
 import LinkPost from '@components/LinkPost';
 import Comment from '@components/Comment';
-import classNames from 'classnames';
+import Avatar from '@components/Avatar';
 import type { IPost, IPostData } from 'types/post';
 import type { IComment } from 'types/comment';
 
@@ -28,13 +26,12 @@ function getPostType(hint: string) {
     }
 }
 
-const SubredditIcons = new Map();
-
 const Post = (props: IPostData) => {
     const {
         crosspost_parent,
         crosspost_parent_list = [],
         subreddit_name_prefixed,
+        subreddit,
         created,
         selftext,
         num_comments,
@@ -51,48 +48,21 @@ const Post = (props: IPostData) => {
 
     const postType = getPostType(post_hint);
 
-    const [subredditIcon, setSubredditIcon] = useState(null);
-    const subreddit = `/${subreddit_name_prefixed}`;
-
-    const { inView, ref } = useInView();
-
-    useEffect(() => {
-        if (!inView) return;
-        const subredditIconUrl = SubredditIcons.get(subreddit);
-        if (subredditIconUrl) setSubredditIcon(subredditIconUrl);
-        else {
-            fetch(`https://www.reddit.com${subreddit}/about.json`)
-                .then((res) => res.json())
-                .then(({ data: { icon_img, community_icon } }) => {
-                    const iconUrl = icon_img || community_icon;
-                    const [strippedParams] = iconUrl.split('?');
-                    setSubredditIcon(strippedParams);
-                    SubredditIcons.set(subreddit, strippedParams);
-                });
-        }
-    }, [inView, subreddit]);
-
     const timeAgo = timeSince(created);
 
     const comments = num_comments;
     const upvotes = kFormatter(ups);
 
+    const subredditLink = `/${subreddit_name_prefixed}`
+
     return (
-        <article ref={ref} className="p-6 -mb-px bg-default">
+        <article className="p-6 -mb-px bg-default">
             {isCrosspost ? (
                 <>
                     <div className="text-default mb-2">
-                        <Link href={subreddit}>
+                        <Link href={subredditLink}>
                             <a className="font-bold text-tiny flex items-center">
-                                {subredditIcon ? (
-                                    <img
-                                        src={subredditIcon}
-                                        alt={`Icon for ${subreddit}`}
-                                        className="mr-4 w-8 h-8 bg-subtle rounded-full flex-none"
-                                    />
-                                ) : (
-                                    <span className="mr-4 w-8 h-8 bg-subtle rounded-full flex-none" />
-                                )}
+                                <Avatar type="subreddit" name={subreddit} />
                                 <span className="overflow-ellipsis overflow-hidden">
                                     {subreddit_name_prefixed}
                                 </span>
@@ -118,17 +88,9 @@ const Post = (props: IPostData) => {
             ) : (
                 <>
                     <div className="text-default mb-2">
-                        <Link href={subreddit}>
+                        <Link href={subredditLink}>
                             <a className="font-bold text-tiny flex items-center">
-                                {subredditIcon ? (
-                                    <img
-                                        src={subredditIcon}
-                                        alt={`Icon for ${subreddit}`}
-                                        className="mr-4 w-8 h-8 bg-subtle border rounded-full flex-none"
-                                    />
-                                ) : (
-                                    <span className="mr-4 w-8 h-8 bg-subtle rounded-full flex-none" />
-                                )}
+                                <Avatar type="subreddit" name={subreddit} />
                                 <span className="overflow-ellipsis overflow-hidden">
                                     {subreddit_name_prefixed}
                                 </span>
@@ -186,9 +148,9 @@ const Home: NextPage<IRootObject> = (props) => {
             ))}
             {hasComments && (
                 <div className="p-4">
-                    {comments?.data.children.map((comment: IComment, i) => (
+                    {comments?.data.children.map((comment: IComment) => (
                         <ul key={comment.data.id}>
-                            <Comment {...comment.data} endThread={true} />
+                            <Comment {...comment.data} isLast={true} />
                         </ul>
                     ))}
                 </div>
