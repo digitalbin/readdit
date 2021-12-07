@@ -1,11 +1,11 @@
-.thread {
-    @apply relative;
-}
-
 .thread:before {
     content: '';
     @apply absolute left-0 top-10 -bottom-6 w-8;
     background-image: url('/line.svg');
+}
+
+.threadbtn {
+    @apply absolute inset-0 w-8 z-10;
 }
 
 .reply {
@@ -15,6 +15,6 @@
 .reply:before {
     content: '';
     @apply w-8 h-10 absolute left-0 -top-4;
-    background-image: url('/curve2.svg');
+    background-image: url('/curve.svg');
     background-size: cover;
 }

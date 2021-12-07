@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import fetch from 'isomorphic-unfetch';
+import he from 'he';
 import Link from 'next/link';
 import type { NextPage, GetServerSideProps } from 'next';
 import { timeSince, kFormatter } from '@utils/index';
@@ -12,7 +13,7 @@ import LinkPost from '@components/LinkPost';
 import Comment from '@components/Comment';
 import classNames from 'classnames';
 import type { IPost, IPostData } from 'types/post';
-import type { IComment, ICommentData } from 'types/comment';
+import type { IComment } from 'types/comment';
 
 function getPostType(hint: string) {
     switch (hint) {
@@ -42,6 +43,8 @@ const Post = (props: IPostData) => {
         title,
         post_hint = '',
     } = props;
+
+    const decodedTitle = he.decode(title);
 
     const isCrosspost = Boolean(crosspost_parent);
     const [parentProps] = crosspost_parent_list;
@@ -101,7 +104,7 @@ const Post = (props: IPostData) => {
                     </div>
                     <Link href={permalink}>
                         <a className="mb-6 block">
-                            <h3>{title}</h3>
+                            <h3>{decodedTitle}</h3>
                         </a>
                     </Link>
                     <div className="bg-subtle">
@@ -137,7 +140,7 @@ const Post = (props: IPostData) => {
                     </div>
                     <Link href={permalink}>
                         <a className="mb-6 block">
-                            <h3 className="text-default">{title}</h3>
+                            <h3 className="text-default">{decodedTitle}</h3>
                         </a>
                     </Link>
                     {postType === 'video' && <VideoPost {...props} />}
@@ -170,15 +173,11 @@ interface IRootObject {
 const Home: NextPage<IRootObject> = (props) => {
     const { posts, comments } = props;
     const hasComments = Boolean(comments);
-    //vrf har den här margin?
     const postClass = classNames('border', {
         'border-transparent': hasComments,
-        // 'm-6': !hasComments,
     });
-    console.log(comments);
     
     return (
-        // <main className={classNames({ 'p-4': !hasComments })}>
         <main>
             {posts?.data?.children?.map((post: IPost) => (
                 <section key={post.data.id} className={postClass}>
