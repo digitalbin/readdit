@@ -44,28 +44,20 @@ const Comment = (props: CommentProps) => {
     const hasReplies = replies && replies.length > 0;
 
     return (
-        <li
-            // className={classNames({ [s.thread]: !endThread })}
-            className={classNames(
-                'overflow-hidden transition-all',
-                { 'max-h-screen': isOpen, 'max-h-14': !isOpen, [s.thread]: !endThread },
-            )}
-        >
+        <li>
             <div
-                className={classNames('flex mb-8', {
-                    [s.thread]: endThread && hasReplies,
+                className={classNames('flex mb-8 relative', {
+                    [s.thread]: endThread && hasReplies && isOpen,
                 })}
-                // onClick={toggleOpen}
             >
-                <div onClick={toggleOpen} className="z-30">
-                    <div
-                        className="w-8 h-8 rounded-full mr-2"
-                        style={{
-                            background: avatarGradient,
-                            filter: visited ? 'grayscale(1)' : undefined,
-                        }}
-                    />
-                </div>
+                <button onClick={toggleOpen} className={s.threadbtn} />
+                <div
+                    className="w-8 h-8 rounded-full mr-2"
+                    style={{
+                        background: avatarGradient,
+                        filter: visited ? 'grayscale(1)' : undefined,
+                    }}
+                />
                 <div className="border-2 rounded-tr rounded-b p-4 flex-1 overflow-hidden">
                     <div
                         className={classNames('text-tiny font-bold', {
@@ -78,16 +70,12 @@ const Comment = (props: CommentProps) => {
                         dangerouslySetInnerHTML={{
                             __html: he.decode(body_html),
                         }}
-                        // className={classNames(
-                        //     'overflow-hidden transition-all',
-                        //     { 'max-h-screen': isOpen, 'max-h-0': !isOpen },
-                        // )}
-                        className={classNames({'max-h-0': !isOpen })}
+                        className={classNames({'hidden': !isOpen })}
                     />
                 </div>
             </div>
             {hasReplies && (
-                <ul className={s.reply}>
+                <ul className={classNames(s.reply, { 'hidden': !isOpen })}>
                     {replies.map((reply: IComment, i: number) => (
                         <Comment
                             {...reply.data}

@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import fetch from 'isomorphic-unfetch';
+import he from 'he';
 import Link from 'next/link';
 import type { NextPage, GetServerSideProps } from 'next';
 import { timeSince, kFormatter } from '@utils/index';
@@ -42,6 +43,8 @@ const Post = (props: IPostData) => {
         title,
         post_hint = '',
     } = props;
+
+    const decodedTitle = he.decode(title);
 
     const isCrosspost = Boolean(crosspost_parent);
     const [parentProps] = crosspost_parent_list;
@@ -101,7 +104,7 @@ const Post = (props: IPostData) => {
                     </div>
                     <Link href={permalink}>
                         <a className="mb-6 block">
-                            <h3>{title}</h3>
+                            <h3>{decodedTitle}</h3>
                         </a>
                     </Link>
                     <div className="bg-subtle rounded">
@@ -142,7 +145,7 @@ const Post = (props: IPostData) => {
                                     'text-tiny': isCrosspost,
                                 })}
                             >
-                                {title}
+                                {decodedTitle}
                             </h3>
                         </a>
                     </Link>
@@ -183,7 +186,6 @@ const Home: NextPage<IRootObject> = (props) => {
     console.log(comments);
     
     return (
-        // <main className={classNames({ 'p-4': !hasComments })}>
         <main>
             {posts?.data?.children?.map((post: IPost) => (
                 <section key={post.data.id} className={postClass}>
