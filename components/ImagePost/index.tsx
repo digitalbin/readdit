@@ -9,13 +9,12 @@ const ImagePost = (props: IPostData) => {
     } = props;
     
     return (
-        <div className="-mx-6">
             <img
                 alt={title}
                 src={url_overridden_by_dest}
                 width="100%"
+                className="rounded"
             />
-        </div>
     )
 }
 

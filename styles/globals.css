@@ -7,9 +7,9 @@ html {
 }
 
 body {
-  @apply font-sans text-default subpixel-antialiased;
+  @apply font-sans text-default subpixel-antialiased bg-foreground;
 }
 
 h3 {
-  @apply font-semibold text-tall;
+  @apply font-bold text-tall;
 }

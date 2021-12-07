@@ -58,7 +58,7 @@ const Comment = (props: CommentProps) => {
                         filter: visited ? 'grayscale(1)' : undefined,
                     }}
                 />
-                <div className="border-2 rounded-tr rounded-b p-4 flex-1 overflow-hidden">
+                <div className="bg-subtle rounded-tr rounded-b p-4 flex-1 overflow-hidden">
                     <div
                         className={classNames('text-tiny font-bold', {
                             'text-subtle': visited,
@@ -70,7 +70,7 @@ const Comment = (props: CommentProps) => {
                         dangerouslySetInnerHTML={{
                             __html: he.decode(body_html),
                         }}
-                        className={classNames({'hidden': !isOpen })}
+                        className={classNames({ 'hidden': !isOpen })}
                     />
                 </div>
             </div>
