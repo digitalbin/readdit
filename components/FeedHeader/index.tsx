@@ -1,5 +1,6 @@
-import { useState, useEffect, ChangeEvent } from 'react';
+import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import fetch from 'isomorphic-unfetch';
 import useDebounce from '@hooks/useDebounce';
 import s from './style.module.css';
@@ -16,6 +17,7 @@ const doSearch = (query: string) => {
 const FeedHeader = () => {
     const [query, setQuery] = useState('');
     const [results, setResults] = useState([]);
+    const router = useRouter();
 
     const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
         const { value } = e.currentTarget;
@@ -26,15 +28,20 @@ const FeedHeader = () => {
 
     useEffect(() => {
         if (!debouncedQuery) return;
-        doSearch(debouncedQuery).then(({ data: { children } }) =>
-            setResults(children),
-        );
+        // doSearch(debouncedQuery).then(({ data: { children } }) =>
+        //     setResults(children),
+        // );
     }, [debouncedQuery]);
+
+    const handleSubmit = (e: FormEvent) => {
+        e.preventDefault();
+        router.push(`/search.json?q=${query}`)
+    }
 
     return (
         <div className={s.header}>
             <h2>Popular posts</h2>
-            <form>
+            <form onSubmit={handleSubmit}>
                 <input
                     placeholder="Search subreddit..."
                     className={s.search}

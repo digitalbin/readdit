@@ -1,7 +1,7 @@
 import fetch from 'isomorphic-unfetch';
 
 const req = (url: string) =>
-    fetch(url, { cache: "force-cache" })
+    fetch(url)
         .then((res) => res.json())
         .catch((err) => console.error('Error fetching: ', url));
 
@@ -22,3 +22,10 @@ export const getSubredditIcon = (subreddit: string) =>
 export const getUserIcon = (username: string) =>
     req(`https://www.reddit.com/user/${username}/about.json`)
         .then(pickIcon);
+
+export const fetchPageData = (slug: string = '', after?: string) => {
+    const url = new URL(slug, 'https://www.reddit.com')
+    if (after) url.searchParams.append('after', after);
+    url.pathname = url.pathname + '.json'
+    return req(url.toString());
+}

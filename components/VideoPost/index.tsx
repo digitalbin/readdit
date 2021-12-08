@@ -24,6 +24,13 @@ const Iframe = ({
 const Video = ({ src }: { src: string }) => {
     const ref = useRef<HTMLVideoElement | null>(null);
 
+    const togglePlay = () => {
+        if (ref.current) {
+            if (ref.current.paused) ref.current.play();
+            else ref.current.pause();
+        }
+    }
+
     const handleInview = (inView: boolean) => {
         if (ref.current) {
             if (inView) ref.current.play();
@@ -32,8 +39,8 @@ const Video = ({ src }: { src: string }) => {
     }
 
     return (
-        <InView as="div" onChange={handleInview} threshold={.8}>
-            <video ref={ref} loop preload="auto" muted className="mx-auto rounded" style={{ maxHeight: 500 }} src={src} />
+        <InView as="div" onChange={handleInview} threshold={.8} onClick={togglePlay}>
+            <video ref={ref} loop playsInline preload="auto" muted className="mx-auto rounded" style={{ maxHeight: 500 }} src={src} />
         </InView>
     );
 };

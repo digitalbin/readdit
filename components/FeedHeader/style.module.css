@@ -4,13 +4,14 @@
         flex
         items-center
         justify-between
-        -top-px
+        top-0
         sticky
         p-md
         font-black
         text-tall
-        -mb-px
-        border;
+        border
+        border-t-0
+        z-50;
 }
 
 .search {

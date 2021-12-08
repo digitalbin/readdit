@@ -1,8 +1,12 @@
-import fetch from 'isomorphic-unfetch';
+/* eslint-disable @next/next/no-img-element */
+import { useEffect, useState, useCallback } from 'react';
+import { useRouter } from 'next/router';
+import { useInView } from 'react-intersection-observer';
 import he from 'he';
 import classNames from 'classnames';
 import Link from 'next/link';
 import type { NextPage, GetServerSideProps } from 'next';
+import { fetchPageData } from '@requests/index';
 import { timeSince, kFormatter } from '@utils/index';
 import ExpandableText from '@components/ExpandableText';
 import VideoPost from '@components/VideoPost';
@@ -56,7 +60,7 @@ const Post = (props: IPostData) => {
     const subredditLink = `/${subreddit_name_prefixed}`
 
     return (
-        <article className="p-md -mb-px bg-default">
+        <article className="p-md bg-default">
             {isCrosspost ? (
                 <>
                     <div className="text-default mb-xs">
@@ -122,6 +126,7 @@ const Post = (props: IPostData) => {
 interface IRootObject {
     posts: {
         data: {
+            after: string;
             children: IPost[];
         };
     };
@@ -133,20 +138,34 @@ interface IRootObject {
 }
 
 const Home: NextPage<IRootObject> = (props) => {
-    const { posts, comments } = props;
+    const { comments } = props;
+    const [after, setAfter] = useState(props.posts.data.after);
+    const [posts, setPosts] = useState(props?.posts?.data?.children);
+    const { asPath } = useRouter();
+    const { inView, ref } = useInView({ threshold: .8 });
     const hasComments = Boolean(comments);
-    const postClass = classNames('border', {
-        'border-transparent': hasComments,
-    });
+
+    useEffect(() => {
+        if (inView) {
+            fetchPageData(asPath, after)
+                .then(res => {
+                    setAfter(res.data.after);
+                    setPosts(pp => pp.concat(res.data.children));
+                });
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [inView])
     
     return (
         <main>
-            {posts?.data?.children?.map((post: IPost) => (
-                <section key={post.data.id} className={postClass}>
-                    <Post {...post.data} />
-                </section>
-            ))}
-            {hasComments && (
+            {posts.map((post: IPost) => {
+                return (
+                    <section key={post.data.id} className="border border-t-0">
+                        <Post {...post.data} />
+                    </section>
+                )
+            })}
+            {hasComments ? (
                 <div className="p-sm">
                     {comments?.data.children.map((comment: IComment) => (
                         <ul key={comment.data.id}>
@@ -154,16 +173,18 @@ const Home: NextPage<IRootObject> = (props) => {
                         </ul>
                     ))}
                 </div>
+            ) : (
+                <div ref={ref} className="flex justify-center">
+                    <img src="/spinner.gif" alt="spinner" className="rounded-full" />
+                </div>
             )}
         </main>
     );
 };
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-    const { req, resolvedUrl } = ctx;
-    const res = await fetch(`https://www.reddit.com${resolvedUrl}.json`).then(
-        (res) => res.json(),
-    );
+    const { resolvedUrl } = ctx;
+    const res = await fetchPageData(resolvedUrl);
     if (Array.isArray(res)) {
         return {
             props: {
