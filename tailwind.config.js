@@ -15,6 +15,7 @@ module.exports = {
       //larger explicit values 👇
       '90': '90px',
       '160': '160px',
+      '300': '300px',
       '400': '400px',
       '600': '600px',
     },
@@ -56,6 +57,9 @@ module.exports = {
     },
     ringColor: {
       primary: "#74FF66",
+    },
+    boxShadow: {
+      default: "rgb(64 64 64 / 10%) 0px 0px 15px, rgb(64 64 64 / 5%) 0px 0px 3px 1px",
     },
   },
   variants: {
