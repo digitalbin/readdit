@@ -43,12 +43,36 @@
 .resultList {
     @apply
         absolute
+        -mt-xs
+        mx-sm
         right-0
-        left-0
-        bg-subtle
+        w-300
+        bg-default
         top-full
-        m-md
-        border
         rounded
-        p-sm;
+        overflow-hidden
+        outline-none
+        shadow-default;
+}
+
+.listItem > a {
+    @apply
+        transition-all
+        py-sm
+        px-md
+        outline-none;
+}
+
+.listItem > a:hover {
+    @apply
+        bg-subtle;
+}
+
+.listItem > a:focus {
+    @apply
+        bg-subtle
+        ring-2
+        ring-primary
+        ring-inset
+        outline-none;
 }

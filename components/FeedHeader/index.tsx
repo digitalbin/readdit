@@ -36,7 +36,7 @@ const FeedHeader = () => {
             <h2>Popular posts</h2>
             <form>
                 <input
-                    placeholder="Search..."
+                    placeholder="Search subreddit..."
                     className={s.search}
                     value={query}
                     onChange={handleInput}
@@ -55,7 +55,7 @@ const FeedHeader = () => {
                         } = data;
                         if (!url) return null;
                         return (
-                            <li key={id} className="py-xs">
+                            <li key={id} className={s.listItem}>
                                 <Link href={url}>
                                     <a className="flex">
                                         <img
@@ -66,7 +66,7 @@ const FeedHeader = () => {
                                             <h3 className="text-default">
                                                 {display_name_prefixed}
                                             </h3>
-                                            <p className="text-tiny font-regular">
+                                            <p className="text-tiny text-subtle font-regular">
                                                 {kFormatter(subscribers)} members
                                             </p>
                                         </div>
