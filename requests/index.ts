@@ -3,13 +3,13 @@ import fetch from 'isomorphic-unfetch';
 const req = (url: string) =>
     fetch(url)
         .then((res) => res.json())
-        .catch((err) => console.error('Error fetching: ', url));
+        .catch((err) => console.error('Error fetching: ', url, err));
 
 const pickIcon = (json: {
     data: { icon_img?: string; community_icon: string };
 }) => {   
     const { icon_img, community_icon } = json?.data || {};
-    const iconUrl = icon_img || community_icon;
+    const iconUrl = icon_img || community_icon || '';
     const [strippedParams] = iconUrl.split('?');
 
     return strippedParams;

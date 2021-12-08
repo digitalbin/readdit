@@ -141,20 +141,29 @@ const Home: NextPage<IRootObject> = (props) => {
     const { comments } = props;
     const [after, setAfter] = useState(props.posts.data.after);
     const [posts, setPosts] = useState(props?.posts?.data?.children);
+    const [isLoading, setIsLoading] = useState(false);
     const { asPath } = useRouter();
     const { inView, ref } = useInView({ threshold: .8 });
     const hasComments = Boolean(comments);
 
     useEffect(() => {
-        if (inView) {
-            fetchPageData(asPath, after)
+        setPosts(props?.posts?.data?.children);
+    }, [props?.posts?.data?.children]);
+    
+
+    const cbFetch = useCallback(() => fetchPageData(asPath, after), [asPath, after]);
+
+    useEffect(() => {
+        if (inView && !isLoading) {
+            setIsLoading(true);
+            cbFetch()
                 .then(res => {
                     setAfter(res.data.after);
                     setPosts(pp => pp.concat(res.data.children));
-                });
+                })
+                .finally(() => setIsLoading(false));
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [inView])
+    }, [cbFetch, inView, isLoading])
     
     return (
         <main>

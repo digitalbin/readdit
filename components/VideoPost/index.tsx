@@ -1,5 +1,5 @@
-import { useEffect, useRef } from 'react';
-import { InView } from 'react-intersection-observer';
+import { SyntheticEvent, useEffect, useState, useRef } from 'react';
+import { useInView } from 'react-intersection-observer';
 import type { IPostData } from 'types/post';
 import s from './style.module.css';
 
@@ -22,26 +22,30 @@ const Iframe = ({
 );
 
 const Video = ({ src }: { src: string }) => {
-    const ref = useRef<HTMLVideoElement | null>(null);
+    const videoRef = useRef<HTMLVideoElement | null>(null);
+    const { ref, inView } = useInView({ threshold: .8 });
+    const [isReady, setIsReady] = useState(false);
 
     const togglePlay = () => {
-        if (ref.current) {
-            if (ref.current.paused) ref.current.play();
-            else ref.current.pause();
+        if (videoRef.current) {
+            if (videoRef.current.paused) videoRef.current.play();
+            else videoRef.current.pause();
         }
     }
 
-    const handleInview = (inView: boolean) => {
-        if (ref.current) {
-            if (inView) ref.current.play();
-            else ref.current.pause();
-        }
+    const handleLoad = (e: SyntheticEvent<HTMLVideoElement>) => {
+        setIsReady(true);
     }
+
+    useEffect(() => {
+        if (inView && isReady) videoRef?.current?.play();
+        else videoRef?.current?.pause();
+    }, [inView, isReady]);
 
     return (
-        <InView as="div" onChange={handleInview} threshold={.8} onClick={togglePlay}>
-            <video ref={ref} loop playsInline preload="auto" muted className="mx-auto rounded" style={{ maxHeight: 500 }} src={src} />
-        </InView>
+        <div ref={ref} onClick={togglePlay}>
+            <video onCanPlay={handleLoad} ref={videoRef} loop playsInline preload="auto" muted className="mx-auto rounded" style={{ maxHeight: 500 }} src={src} />
+        </div>
     );
 };
 
