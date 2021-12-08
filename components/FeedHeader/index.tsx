@@ -55,11 +55,11 @@ const FeedHeader = () => {
                         } = data;
                         if (!url) return null;
                         return (
-                            <li key={id} className="py-2">
+                            <li key={id} className="py-xs">
                                 <Link href={url}>
                                     <a className="flex">
                                         <img
-                                            className="mr-4 w-8 h-8 bg-subtle rounded-full overflow-hidden flex-none"
+                                            className="mr-sm w-lg h-lg bg-subtle rounded-full overflow-hidden flex-none"
                                             src={icon_img}
                                         />
                                         <div>

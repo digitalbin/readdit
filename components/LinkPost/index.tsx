@@ -22,9 +22,7 @@ const LinkPost = (props: IPostData) => {
               <img
                 src={thumb.toString()}
                 alt={title}
-                width={144}
-                height={100}
-                className="object-cover border rounded w-64 h-40"
+                className="object-cover border rounded w-160 h-90"
               />
           )}
         </a>

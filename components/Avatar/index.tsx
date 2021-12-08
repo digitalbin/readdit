@@ -18,7 +18,7 @@ const Avatar: FC<Props> = ({ type, name }) => {
     if (error) console.log(error);
     const prefix = type === 'user' ? 'u' : 'r'
     return (
-        <figure className="mr-4 w-8 h-8 bg-subtle rounded-full overflow-hidden flex-none">
+        <figure className="mr-sm w-lg h-lg bg-subtle rounded-full overflow-hidden flex-none">
             {icon && (
                 <img
                     src={icon}

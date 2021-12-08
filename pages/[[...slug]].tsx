@@ -56,10 +56,10 @@ const Post = (props: IPostData) => {
     const subredditLink = `/${subreddit_name_prefixed}`
 
     return (
-        <article className="p-6 -mb-px bg-default">
+        <article className="p-md -mb-px bg-default">
             {isCrosspost ? (
                 <>
-                    <div className="text-default mb-2">
+                    <div className="text-default mb-xs">
                         <Link href={subredditLink}>
                             <a className="font-bold text-tiny flex items-center">
                                 <Avatar type="subreddit" name={subreddit} />
@@ -73,21 +73,21 @@ const Post = (props: IPostData) => {
                         </Link>
                     </div>
                     <Link href={permalink}>
-                        <a className="mb-6 block">
+                        <a className="mb-md block">
                             <h3>{decodedTitle}</h3>
                         </a>
                     </Link>
                     <div className="bg-subtle">
                         <Post {...parentProps} />
                     </div>
-                    <div className="text-subtle text-tiny mt-6">
-                        <span className="mr-4">{comments} comments</span>
+                    <div className="text-subtle text-tiny mt-md">
+                        <span className="mr-sm">{comments} comments</span>
                         {upvotes} upvotes
                     </div>
                 </>
             ) : (
                 <>
-                    <div className="text-default mb-2">
+                    <div className="text-default mb-xs">
                         <Link href={subredditLink}>
                             <a className="font-bold text-tiny flex items-center">
                                 <Avatar type="subreddit" name={subreddit} />
@@ -101,7 +101,7 @@ const Post = (props: IPostData) => {
                         </Link>
                     </div>
                     <Link href={permalink}>
-                        <a className="mb-6 block">
+                        <a className="mb-md block">
                             <h3 className="text-default">{decodedTitle}</h3>
                         </a>
                     </Link>
@@ -109,8 +109,8 @@ const Post = (props: IPostData) => {
                     {postType === 'image' && <ImagePost {...props} />}
                     {postType === 'link' && <LinkPost {...props} />}
                     {selftext && <ExpandableText {...props} />}
-                    <div className="text-subtle text-tiny mt-6">
-                        <span className="mr-4">{comments} comments</span>
+                    <div className="text-subtle text-tiny mt-md">
+                        <span className="mr-sm">{comments} comments</span>
                         {upvotes} upvotes
                     </div>
                 </>
@@ -147,7 +147,7 @@ const Home: NextPage<IRootObject> = (props) => {
                 </section>
             ))}
             {hasComments && (
-                <div className="p-4">
+                <div className="p-sm">
                     {comments?.data.children.map((comment: IComment) => (
                         <ul key={comment.data.id}>
                             <Comment {...comment.data} isLast={true} />

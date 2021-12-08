@@ -5,7 +5,8 @@
         overflow-hidden
         relative
         whitespace-nowrap
-        mb-6
+        -mt-sm
+        mb-md
         text-tiny
         underline;
         max-width: 50%;

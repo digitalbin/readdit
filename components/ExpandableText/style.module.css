@@ -1,7 +1,7 @@
 .wrapper {
     @apply
-        max-h-40
-        -mt-3
+        max-h-90
+        -mt-sm
         overflow-hidden
         relative
         transition-all;
@@ -14,7 +14,7 @@
         left-0
         right-0
         bottom-0
-        h-28
+        h-90
         transition-opacity;
     background-image: linear-gradient(to bottom, transparent, #FFFFFF 60%);
 }
@@ -33,7 +33,7 @@
         font-bold
         block
         absolute
-        bottom-4
+        bottom-sm
         left-0
         right-0
         text-center

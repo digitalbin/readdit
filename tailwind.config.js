@@ -4,6 +4,20 @@ module.exports = {
   purge: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
   darkMode: false, // or 'media' or 'class'
   theme: {
+    spacing: {
+      '0': '0px',
+      px: '1px',
+      xs: '5px',
+      sm: '10px',
+      md: '15px',
+      lg: '20px',
+      xl: '30px',
+      //larger explicit values 👇
+      '90': '90px',
+      '160': '160px',
+      '400': '400px',
+      '600': '600px',
+    },
     textColor: {
       default: '#111',
       subtle: '#404040',
