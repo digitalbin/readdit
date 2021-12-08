@@ -1,20 +1,20 @@
 .thread:before {
     content: '';
-    @apply absolute left-0 top-10 -bottom-6 w-8;
+    @apply absolute left-0 top-xl -bottom-md w-lg;
     background-image: url('/line.svg');
 }
 
 .threadbtn {
-    @apply absolute inset-0 w-8 z-10;
+    @apply absolute inset-0 w-lg z-10;
 }
 
 .reply {
-    @apply pl-10 relative;
+    @apply pl-xl relative;
 }
 
 .reply:before {
     content: '';
-    @apply w-8 h-10 absolute left-0 -top-4;
+    @apply w-lg h-xl absolute left-0 -top-sm;
     background-image: url('/curve.svg');
     background-size: cover;
 }

@@ -17,7 +17,7 @@ const ExpandableText = ({ selftext }: { selftext: string }) => {
     return (
         <div className={className} onClick={handleExpand}>
             {paragraphs.map((p: string, i: number) => (
-                <p className="mb-4 text-subtle" key={i}>
+                <p className="mb-sm text-subtle" key={i}>
                     {p}
                 </p>
             ))}

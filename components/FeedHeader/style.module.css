@@ -1,12 +1,12 @@
 .header {
     @apply
+        bg-default
         flex
         items-center
         justify-between
         -top-px
         sticky
-        bg-default
-        p-6
+        p-md
         font-black
         text-tall
         -mb-px
@@ -16,8 +16,7 @@
 .search {
     @apply
         bg-subtle
-        py-3
-        px-4
+        p-sm
         text-default
         border-2
         rounded-sm
@@ -48,8 +47,8 @@
         left-0
         bg-subtle
         top-full
-        m-6
+        m-md
         border
         rounded
-        p-4;
+        p-sm;
 }

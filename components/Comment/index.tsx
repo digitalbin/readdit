@@ -53,14 +53,14 @@ const Comment = (props: CommentProps) => {
         >
             <div
                 className={
-                    classNames('flex mb-8 relative', {
+                    classNames('flex mb-lg relative', {
                     [s.thread]: isOpen && (!isLast || hasReplies),
                     'filter grayscale': visited,
                 })}
             >
                 <button onClick={toggleOpen} className={s.threadbtn} />
                 <Avatar type="user" name={author} />
-                <div className="bg-subtle rounded-tr rounded-b p-4 flex-1 overflow-hidden">
+                <div className="bg-subtle rounded-tr rounded-b p-sm flex-1 overflow-hidden">
                     <div
                         className={classNames('text-tiny font-bold', {
                             'text-subtle': visited,
