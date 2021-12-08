@@ -14,7 +14,8 @@ const reqMap = {
 }
 
 const Avatar: FC<Props> = ({ type, name }) => {
-    const { data: icon } = useSWRImmutable(name, reqMap[type]);
+    const { data: icon, error } = useSWRImmutable(name, reqMap[type]);
+    if (error) console.log(error);
     const prefix = type === 'user' ? 'u' : 'r'
     return (
         <figure className="mr-4 w-8 h-8 bg-subtle rounded-full overflow-hidden flex-none">

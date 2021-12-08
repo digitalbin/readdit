@@ -1,0 +1,55 @@
+.header {
+    @apply
+        flex
+        items-center
+        justify-between
+        -top-px
+        sticky
+        bg-default
+        p-6
+        font-black
+        text-tall
+        -mb-px
+        border;
+}
+
+.search {
+    @apply
+        bg-subtle
+        py-3
+        px-4
+        text-default
+        border-2
+        rounded-sm
+        outline-none
+        transition-all
+        duration-200;
+    max-width: 190px;
+}
+
+.search:focus {
+    @apply
+        outline-none
+        border-primary
+        ring-4
+        ring-primary
+        ring-opacity-30
+        bg-default;
+}
+
+.search:hover {
+    @apply bg-default;
+}
+
+.resultList {
+    @apply
+        absolute
+        right-0
+        left-0
+        bg-subtle
+        top-full
+        m-6
+        border
+        rounded
+        p-4;
+}
