@@ -1,11 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 import { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/router';
-import { useInView } from 'react-intersection-observer';
 import type { NextPage, GetServerSideProps } from 'next';
 import { fetchPageData } from '@requests/index';
 import Post from '@components/Post';
 import Comment from '@components/Comment';
+import Spinner from '@components/Spinner';
 import type { IPost } from 'types/post';
 import type { IComment } from 'types/comment';
 
@@ -29,7 +29,6 @@ const Home: NextPage<IRootObject> = (props) => {
     const [posts, setPosts] = useState(props?.posts?.data?.children);
     const [isLoading, setIsLoading] = useState(false);
     const { asPath } = useRouter();
-    const { inView, ref } = useInView({ threshold: .8 });
     const hasComments = Boolean(comments);
 
     useEffect(() => {
@@ -39,8 +38,8 @@ const Home: NextPage<IRootObject> = (props) => {
 
     const cbFetch = useCallback(() => fetchPageData(asPath, after), [asPath, after]);
 
-    useEffect(() => {
-        if (inView && !isLoading) {
+    const fetchData = () => {
+        if (!isLoading) {
             setIsLoading(true);
             cbFetch()
                 .then(res => {
@@ -49,7 +48,7 @@ const Home: NextPage<IRootObject> = (props) => {
                 })
                 .finally(() => setIsLoading(false));
         }
-    }, [cbFetch, inView, isLoading])
+    }
     
     return (
         <main>
@@ -69,9 +68,7 @@ const Home: NextPage<IRootObject> = (props) => {
                     ))}
                 </div>
             ) : (
-                <div ref={ref} className="flex justify-center">
-                    <img src="/spinner.gif" alt="spinner" className="rounded-full" />
-                </div>
+                <Spinner onInView={fetchData} />
             )}
         </main>
     );
