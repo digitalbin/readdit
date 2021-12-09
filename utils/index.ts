@@ -1,4 +1,6 @@
 import pick from 'just-pick';
+import { IPostData, IPost } from 'types/post';
+import { ICommentData, IComment } from 'types/comment';
 
 const intervals = [
     { label: 'year', seconds: 31536000 },
@@ -45,9 +47,17 @@ const postPropList = [
   'replies'
 ];
 
-export function stripData({ data }) {
+interface IRes {
+  data: {
+      after?: string;
+      children: IPost[] | IComment[];
+  }
+}
+
+export function stripData({ data }: IRes) {
   const { after, children = [] } = data || {};
-  const strippedChildren = children.map(child => ({ data: pick(child.data, postPropList) }));
+  // @ts-ignore
+  const strippedChildren = children.map((child: IPost | IComment) => ({ data: pick(child.data, postPropList) }));
   
   return {
       data: {
