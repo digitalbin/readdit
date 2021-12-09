@@ -56,6 +56,7 @@ interface IRes {
 
 export function stripData({ data }: IRes) {
   const { after, children = [] } = data || {};
+  
   // @ts-ignore
   const strippedChildren = children.map((child: IPost | IComment) => ({ data: pick(child.data, postPropList) }));
   
