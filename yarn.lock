@@ -2087,6 +2087,16 @@ jsonfile@^6.0.1:
     array-includes "^3.1.3"
     object.assign "^4.1.2"
 
+just-intersect@^4.0.2:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/just-intersect/-/just-intersect-4.0.2.tgz#67a026d44b69aac63784ddf1922ef57cbe311ecf"
+  integrity sha512-6E/XHd34Y2yOQa8eBeMYsl8F/GqiK/Wr/17uFv9Cbc6jXMdJGu1r9utBMp+emTnsBjxD4sJnBmGzOyx4LEGCwQ==
+
+just-pick@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/just-pick/-/just-pick-4.0.1.tgz#cf8571885ef9260c4bd3b4ea4b479f1ef721f797"
+  integrity sha512-8+xh2htMkCqrOzh1hhNF1RYh3WbC6JbdRrA8rPMQcvd/pw2DT5wgIsQKfwh/qwc/CJ0Lev95c1e0jlJHN9T5Gw==
+
 language-subtag-registry@~0.3.2:
   version "0.3.21"
   resolved "https://registry.yarnpkg.com/language-subtag-registry/-/language-subtag-registry-0.3.21.tgz#04ac218bea46f04cb039084602c6da9e788dd45a"

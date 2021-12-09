@@ -6,6 +6,7 @@ import { fetchPageData } from '@requests/index';
 import Post from '@components/Post';
 import Comment from '@components/Comment';
 import Spinner from '@components/Spinner';
+import { stripData } from '@utils/index';
 import type { IPost } from 'types/post';
 import type { IComment } from 'types/comment';
 
@@ -77,18 +78,20 @@ const Home: NextPage<IRootObject> = (props) => {
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const { resolvedUrl } = ctx;
     const res = await fetchPageData(resolvedUrl);
+    console.log('*******************', resolvedUrl);
+    
     if (Array.isArray(res)) {
         return {
             props: {
-                posts: res[0],
-                comments: res[1],
+                posts: stripData(res[0]),
+                comments: stripData(res[1]),
             },
         };
     }
 
     return {
         props: {
-            posts: res,
+            posts: stripData(res),
         },
     };
 };

@@ -15,7 +15,7 @@ const Spinner: FC<Props> = ({ onInView }) => {
     }, [inView, onInView]);
     return (
         <div ref={ref} className="flex justify-center p-90">
-            <img src="/vollie_opt.svg" alt="spinner" className="rounded-full w-xl h-xl" />
+            <img src="/vollie.svg" alt="spinner" className="rounded-full w-xl h-xl" />
         </div>
     )
 }

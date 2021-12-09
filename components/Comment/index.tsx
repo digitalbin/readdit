@@ -18,13 +18,14 @@ const Comment = (props: CommentProps) => {
         if (!visited) setVisited(true);
     };
 
-    const { body_html, author, isLast } = props;
+    const { body_html, author, isLast, replies } = props;
     if (!body_html) return null;
+    
     // Special "view more" item... TODO
-    const replies = props?.replies?.data?.children.filter(
+    const filteredReplies = replies?.data?.children.filter(
         ({ data: { body_html } }) => Boolean(body_html),
     );
-    const hasReplies = replies && replies.length > 0;
+    const hasReplies = filteredReplies && filteredReplies.length > 0;
 
     return (
         <li
@@ -60,10 +61,10 @@ const Comment = (props: CommentProps) => {
             </div>
             {hasReplies && (
                 <ul className={classNames(s.reply, { 'hidden': !isOpen })}>
-                    {replies.map((reply: IComment, i: number) => (
+                    {filteredReplies.map((reply: IComment, i: number) => (
                         <Comment
                             {...reply.data}
-                            isLast={i === replies.length - 1}
+                            isLast={i === filteredReplies.length - 1}
                             key={reply.data.id}
                         />
                     ))}

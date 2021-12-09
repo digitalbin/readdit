@@ -36,7 +36,8 @@ const reqMap = {
 };
 
 const Avatar: FC<Props> = ({ type, name }) => {
-    const { data: icon, error } = useSWRImmutable(name, reqMap[type]);
+    const attemptFetch = name !== '[deleted]';
+    const { data: icon, error } = useSWRImmutable(attemptFetch ? name : null, reqMap[type]);
     if (error) console.log(error);
     const prefix = type === 'user' ? 'u' : 'r';
 
