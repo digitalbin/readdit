@@ -61,7 +61,7 @@ const Home: NextPage<IRootObject> = (props) => {
                 )
             })}
             {hasComments ? (
-                <div className="p-sm">
+                <div className="p-md bg-default border border-t-0">
                     {comments?.data.children.map((comment: IComment) => (
                         <ul key={comment.data.id}>
                             <Comment {...comment.data} isLast={true} />
