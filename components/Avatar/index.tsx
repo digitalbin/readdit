@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
+import { useInView } from 'react-intersection-observer';
 import useSWRImmutable from 'swr/immutable';
 import { getSubredditIcon, getUserIcon } from '@requests/index';
 
@@ -14,12 +15,20 @@ const reqMap = {
 }
 
 const Avatar: FC<Props> = ({ type, name }) => {
-    const attemptFetch = name !== '[deleted]';
-    const { data: icon, error } = useSWRImmutable(attemptFetch ? name : null, reqMap[type]);
+    const [shouldFetch, setShouldFetch] = useState(false);
+    const { inView, ref } = useInView();
+    const { data: icon, error } = useSWRImmutable(shouldFetch ? name : null, reqMap[type]);
+    useEffect(() => {
+        if (inView && !icon && name !== '[deleted]') {
+            setShouldFetch(true);
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [inView]);
+
     if (error) console.log(error);
     const prefix = type === 'user' ? 'u' : 'r'
     return (
-        <figure className="mr-sm w-lg h-lg bg-subtle rounded-full overflow-hidden flex-none">
+        <figure ref={ref} className="mr-sm w-lg h-lg bg-subtle rounded-full overflow-hidden flex-none">
             {icon && (
                 <img
                     src={icon}
