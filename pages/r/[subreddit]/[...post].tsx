@@ -12,7 +12,7 @@ const PostPage: NextPage<IRootObject> = (props) => {
     return (
         <>
             <PostList {...props} />
-            <div className="p-sm">
+            <div className="bg-default p-md border border-t-0">
                 {comments?.data.children.map((comment: IComment) => (
                     <ul key={comment.data.id}>
                         <Comment {...comment.data} isLast={true} />
