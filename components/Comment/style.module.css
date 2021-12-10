@@ -23,6 +23,6 @@
     display: inline;
 }
 
-.comment span {
-    @apply font-bold
+.comment h3 {
+    @apply font-bold inline text-default;
 }

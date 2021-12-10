@@ -3,6 +3,7 @@ import he from 'he';
 import classNames from 'classnames';
 import Avatar from '@components/Avatar';
 import { ICommentData, IComment } from 'types/comment';
+import { kFormatter, timeSince } from '@utils/index';
 import s from './style.module.css';
 
 interface CommentProps extends ICommentData {
@@ -18,7 +19,7 @@ const Comment = (props: CommentProps) => {
         if (!visited) setVisited(true);
     };
 
-    const { body_html, author, isLast, replies } = props;
+    const { body_html, author, isLast, replies, ups, created } = props;
     if (!body_html) return null;
     
     // Special "view more" item... TODO
@@ -27,12 +28,12 @@ const Comment = (props: CommentProps) => {
     );
     const hasReplies = filteredReplies && filteredReplies.length > 0;
 
-    const authorElementString = `<span>${author} </span>`
+    const authorElementString = `<h3>${author} </h3>`
 
     const decodedHtmlBody = he.decode(body_html);
 
     const withAuthor = decodedHtmlBody.replace('>', '>' + authorElementString)
-
+    
     return (
         <li
             className={
@@ -49,16 +50,15 @@ const Comment = (props: CommentProps) => {
             >
                 <button onClick={toggleOpen} className={s.threadbtn} />
                 <Avatar type="user" name={author} />
-                {/* <div className="bg-subtle bg-opacity-50 rounded-tr rounded-b px-md py-sm flex-1 overflow-hidden"> */}
                 <div className="flex-1 overflow-hidden">
+                    {!isOpen && <h3 className="text-default">{author}</h3>}
                     <div
                         dangerouslySetInnerHTML={{
                             __html: withAuthor,
                         }}
                         className={classNames( s.comment, { 'hidden': !isOpen })}
                     />
-                    {/* Häär ha skulle d va nirr med denna datish om du vill veta va ja känna haah */}
-                    <p className="text-tiny text-subtle mt-sm">2h ago • 3k upvotes</p>
+                    <p className="text-tiny text-subtle mt-sm">{timeSince(created)} • {kFormatter(ups)} upvotes</p>
                 </div>
             </div>
             {hasReplies && (

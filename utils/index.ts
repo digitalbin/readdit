@@ -11,7 +11,8 @@ const intervals = [
     { label: 'second', seconds: 1 }
   ];
   
-export function timeSince(time: number) {
+export function timeSince(time?: number) {
+    if (!time) return 'n/a ago';
     const date = new Date(time * 1000)
     const seconds = Math.floor((Date.now() - date.getTime()) / 1000);
     const interval = intervals.find(i => i.seconds < seconds);
@@ -20,7 +21,7 @@ export function timeSince(time: number) {
     return `${count} ${interval.label}${count !== 1 ? 's' : ''} ago`;
 }
 
-export function kFormatter(num: number) {
+export function kFormatter(num: number = 0) {
   return Math.abs(num) > 999 ? Math.sign(num)*parseFloat((Math.abs(num)/1000).toFixed(1)) + 'k' : Math.sign(num)*Math.abs(num)
 }
 
