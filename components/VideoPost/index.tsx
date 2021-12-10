@@ -43,8 +43,8 @@ const Video = ({ src }: { src: string }) => {
     }, [inView, isReady]);
 
     return (
-        <div ref={ref} onClick={togglePlay}>
-            <video onCanPlay={handleLoad} ref={videoRef} loop playsInline preload="auto" muted className="mx-auto rounded" style={{ maxHeight: 500 }} src={src} />
+        <div ref={ref}>
+            <video onClick={togglePlay} onCanPlay={handleLoad} ref={videoRef} loop playsInline preload="auto" muted className="mx-auto rounded" style={{ maxHeight: 500 }} src={src} />
         </div>
     );
 };

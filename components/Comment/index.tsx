@@ -27,6 +27,12 @@ const Comment = (props: CommentProps) => {
     );
     const hasReplies = filteredReplies && filteredReplies.length > 0;
 
+    const authorElementString = `<span>${author} </span>`
+
+    const decodedHtmlBody = he.decode(body_html);
+
+    const withAuthor = decodedHtmlBody.replace('>', '>' + authorElementString)
+
     return (
         <li
             className={
@@ -36,27 +42,23 @@ const Comment = (props: CommentProps) => {
         >
             <div
                 className={
-                    classNames('flex mb-lg relative', {
+                    classNames('flex mb-xl relative', {
                     [s.thread]: isOpen && (!isLast || hasReplies),
                     'filter grayscale': visited,
                 })}
             >
                 <button onClick={toggleOpen} className={s.threadbtn} />
                 <Avatar type="user" name={author} />
-                <div className="bg-subtle rounded-tr rounded-b p-sm flex-1 overflow-hidden">
-                    <div
-                        className={classNames('text-tiny font-bold', {
-                            'text-subtle': visited,
-                        })}
-                    >
-                        {author}
-                    </div>
+                {/* <div className="bg-subtle bg-opacity-50 rounded-tr rounded-b px-md py-sm flex-1 overflow-hidden"> */}
+                <div className="flex-1 overflow-hidden">
                     <div
                         dangerouslySetInnerHTML={{
-                            __html: he.decode(body_html),
+                            __html: withAuthor,
                         }}
-                        className={classNames({ 'hidden': !isOpen })}
+                        className={classNames( s.comment, { 'hidden': !isOpen })}
                     />
+                    {/* Häär ha skulle d va nirr med denna datish om du vill veta va ja känna haah */}
+                    <p className="text-tiny text-subtle mt-sm">2h ago • 3k upvotes</p>
                 </div>
             </div>
             {hasReplies && (

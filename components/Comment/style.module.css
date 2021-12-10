@@ -1,6 +1,6 @@
 .thread:before {
     content: '';
-    @apply absolute left-0 top-xl -bottom-md w-lg;
+    @apply absolute left-0 top-xl -bottom-lg w-lg;
     background-image: url('/line.svg');
 }
 
@@ -17,4 +17,12 @@
     @apply w-lg h-xl absolute left-0 -top-sm;
     background-image: url('/curve.svg');
     background-size: cover;
+}
+
+.comment p {
+    display: inline;
+}
+
+.comment span {
+    @apply font-bold
 }
