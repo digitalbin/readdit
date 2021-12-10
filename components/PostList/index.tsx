@@ -32,7 +32,7 @@ const PostList: FC<IRootObject> = (props) => {
                 .finally(() => setIsLoading(false));
         }
     };
-
+    
     return (
         <>
             {posts?.map((post: IPost) => {

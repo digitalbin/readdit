@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -18,6 +19,9 @@ const FeedHeader = () => {
     const [query, setQuery] = useState('');
     const [results, setResults] = useState([]);
     const router = useRouter();
+    
+    const { subreddit } = router?.query;
+    const headerTitle = subreddit ? `r/${subreddit}` : 'Popular';
 
     const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
         const { value } = e.currentTarget;
@@ -40,7 +44,7 @@ const FeedHeader = () => {
 
     return (
         <header className={s.header}>
-            <h2>Popular posts</h2>
+            <h2>{headerTitle}</h2>
             <form onSubmit={handleSubmit}>
                 <input
                     placeholder="Search subreddit..."
@@ -48,44 +52,49 @@ const FeedHeader = () => {
                     value={query}
                     onChange={handleInput}
                 />
+                {Boolean(results.length) && (
+                    <ul className={s.resultList}>
+                        {results.map(({ data }) => {
+                            const {
+                                display_name_prefixed,
+                                displayname,
+                                subscribers,
+                                url,
+                                icon_img = '',
+                                community_icon = '',
+                                id,
+                            } = data;
+                            if (!url) return null;
+                            
+                            const [iconUrl] = (icon_img || community_icon).split('?');
+                            
+                            return (
+                                <li key={id} className={s.listItem}>
+                                    <Link href={url}>
+                                        <a className="flex">
+                                            {iconUrl ? (
+                                                <img
+                                                    className="mr-sm w-lg h-lg rounded-full overflow-hidden flex-none"
+                                                    alt={`Icon for ${display_name_prefixed}`}
+                                                    src={iconUrl}
+                                                />
+                                            ) : <span className="mr-sm w-lg h-lg bg-subtle rounded-full flex-none" />}
+                                            <div>
+                                                <h3 className="text-default">
+                                                    {display_name_prefixed}
+                                                </h3>
+                                                <p className="text-tiny text-subtle font-regular">
+                                                    {kFormatter(subscribers)} members
+                                                </p>
+                                            </div>
+                                        </a>
+                                    </Link>
+                                </li>
+                            );
+                        })}
+                    </ul>
+                )}
             </form>
-            {Boolean(results.length) && (
-                <ul className={s.resultList}>
-                    {results.map(({ data }) => {
-                        const {
-                            display_name_prefixed,
-                            displayname,
-                            subscribers,
-                            url,
-                            icon_img,
-                            id,
-                        } = data;
-                        if (!url) return null;
-                        return (
-                            <li key={id} className={s.listItem}>
-                                <Link href={url}>
-                                    <a className="flex">
-                                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                                        <img
-                                            className="mr-sm w-lg h-lg bg-subtle rounded-full overflow-hidden flex-none"
-                                            alt={`Icon for ${display_name_prefixed}`}
-                                            src={icon_img}
-                                        />
-                                        <div>
-                                            <h3 className="text-default">
-                                                {display_name_prefixed}
-                                            </h3>
-                                            <p className="text-tiny text-subtle font-regular">
-                                                {kFormatter(subscribers)} members
-                                            </p>
-                                        </div>
-                                    </a>
-                                </Link>
-                            </li>
-                        );
-                    })}
-                </ul>
-            )}
         </header>
     );
 };

@@ -53,7 +53,12 @@
         rounded
         overflow-hidden
         outline-none
-        shadow-default;
+        shadow-default
+        hidden;
+}
+
+.header:focus-within .resultList {
+    @apply block;
 }
 
 .listItem > a {
@@ -76,4 +81,14 @@
         ring-primary
         ring-inset
         outline-none;
+}
+
+.listItem:first-of-type > a:focus {
+    @apply
+        rounded-t;
+}
+
+.listItem:last-of-type > a:focus {
+    @apply
+        rounded-b;
 }
