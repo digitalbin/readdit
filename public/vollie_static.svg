@@ -1,0 +1,32 @@
+<svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
+    <mask id="a" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="50" height="50">
+        <path d="M25 50c13.8071 0 25-11.1929 25-25S38.8071 0 25 0 0 11.1929 0 25s11.1929 25 25 25Z" fill="#fff" />
+    </mask>
+    <g mask="url(#a)">
+        <path d="M25 50c13.8071 0 25-11.1929 25-25S38.8071 0 25 0 0 11.1929 0 25s11.1929 25 25 25Z" fill="url(#b)" />
+        <mask id="c" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="50" height="50">
+            <g id="wrap">
+                <path id="line"
+                    d="M-20.0005 22.5745C-20.0005 9.64684-13.2847 5-5.00049 5c8.2842 0 15 4.64684 15 17.5745m29.99999 0C39.9995 9.64684 46.7153 5 54.9995 5s15 4.64684 15 17.5745m-30-.1491c0 12.9278-6.7158 17.5746-15 17.5746S9.99951 35.3532 9.99951 22.4254m-30.00001 0c0 12.9278-6.7158 17.5746-15 17.5746-8.2843 0-15-4.6468-15-17.5746"
+                    stroke="#fff" stroke-width="4" />
+            </g>
+        </mask>
+        <g mask="url(#c)">
+            <path fill="url(#d)" d="M0 0h50v50H0z" />
+        </g>
+        <path transform="matrix(1 0 0 -1 0 50)" fill="#111" d="M0 0h50v50H0z" style="mix-blend-mode:overlay"
+            opacity=".3" />
+    </g>
+    <defs>
+        <linearGradient id="b" x1="24.9966" y1="1.1375" x2="24.9966" y2="46" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#74FF66" />
+            <stop offset="1" stop-color="#14C700" />
+        </linearGradient>
+        <linearGradient id="d" x1="25" y1="-8.33333" x2="25" y2="58.3333" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#fff" />
+            <stop offset=".421421" stop-color="#ECF1EB" />
+            <stop offset=".827347" stop-color="#B2CFAF" />
+            <stop offset="1" stop-color="#AEEBAA" />
+        </linearGradient>
+    </defs>
+</svg>

@@ -28,9 +28,9 @@ const FeedHeader = () => {
 
     useEffect(() => {
         if (!debouncedQuery) return;
-        // doSearch(debouncedQuery).then(({ data: { children } }) =>
-        //     setResults(children),
-        // );
+        doSearch(debouncedQuery).then(({ data: { children } }) =>
+            setResults(children),
+        );
     }, [debouncedQuery]);
 
     const handleSubmit = (e: FormEvent) => {
@@ -39,7 +39,7 @@ const FeedHeader = () => {
     }
 
     return (
-        <div className={s.header}>
+        <header className={s.header}>
             <h2>Popular posts</h2>
             <form onSubmit={handleSubmit}>
                 <input
@@ -65,8 +65,10 @@ const FeedHeader = () => {
                             <li key={id} className={s.listItem}>
                                 <Link href={url}>
                                     <a className="flex">
+                                        {/* eslint-disable-next-line @next/next/no-img-element */}
                                         <img
                                             className="mr-sm w-lg h-lg bg-subtle rounded-full overflow-hidden flex-none"
+                                            alt={`Icon for ${display_name_prefixed}`}
                                             src={icon_img}
                                         />
                                         <div>
@@ -84,7 +86,7 @@ const FeedHeader = () => {
                     })}
                 </ul>
             )}
-        </div>
+        </header>
     );
 };
 

@@ -69,7 +69,7 @@ const Post = (props: IPostData) => {
                     </div>
                     <Link href={permalink}>
                         <a className="mb-md block">
-                            <h3>{decodedTitle}</h3>
+                            <h3 className="break-words">{decodedTitle}</h3>
                         </a>
                     </Link>
                     <div className="bg-subtle">
@@ -97,7 +97,7 @@ const Post = (props: IPostData) => {
                     </div>
                     <Link href={permalink}>
                         <a className="mb-md block">
-                            <h3 className="text-default">{decodedTitle}</h3>
+                            <h3 className="text-default break-words">{decodedTitle}</h3>
                         </a>
                     </Link>
                     {postType === 'video' && <VideoPost {...props} />}

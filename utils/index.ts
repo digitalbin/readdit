@@ -1,3 +1,7 @@
+import pick from 'just-pick';
+import { IPostData, IPost } from 'types/post';
+import { ICommentData, IComment } from 'types/comment';
+
 const intervals = [
     { label: 'year', seconds: 31536000 },
     { label: 'month', seconds: 2592000 },
@@ -18,4 +22,48 @@ export function timeSince(time: number) {
 
 export function kFormatter(num: number) {
   return Math.abs(num) > 999 ? Math.sign(num)*parseFloat((Math.abs(num)/1000).toFixed(1)) + 'k' : Math.sign(num)*Math.abs(num)
+}
+
+const postPropList = [
+  'crosspost_parent',
+  'crosspost_parent_list',
+  'subreddit_name_prefixed',
+  'subreddit',
+  'created',
+  'selftext',
+  'num_comments',
+  'ups',
+  'permalink',
+  'id',
+  'title',
+  'post_hint',
+  'media',
+  'preview',
+  'secure_media_embed',
+  'url_overridden_by_dest',
+  'thumbnail',
+  'body_html',
+  'author',
+  'replies'
+];
+
+interface IRes {
+  data: {
+      after?: string;
+      children: IPost[] | IComment[];
+  }
+}
+
+export function stripData({ data }: IRes) {
+  const { after, children = [] } = data || {};
+  
+  // @ts-ignore
+  const strippedChildren = children.map((child: IPost | IComment) => ({ data: pick(child.data, postPropList) }));
+  
+  return {
+      data: {
+        after,
+        children: strippedChildren,
+      }
+  }
 }
