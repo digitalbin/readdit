@@ -13,17 +13,13 @@ const Iframe = ({
     height?: number;
 }) => (
     <div className={s.iframeWrapper}>
-        <iframe
-            src={src}
-            width={width}
-            height={height}
-        />
+        <iframe src={src} width={width} height={height} />
     </div>
 );
 
-const Video = ({ src }: { src: string }) => {
+const Video = ({ src, poster }: { src: string; poster: string }) => {
     const videoRef = useRef<HTMLVideoElement | null>(null);
-    const { ref, inView } = useInView({ threshold: .8 });
+    const { ref, inView } = useInView({ threshold: 0.8 });
     const [isReady, setIsReady] = useState(false);
 
     const togglePlay = () => {
@@ -31,11 +27,11 @@ const Video = ({ src }: { src: string }) => {
             if (videoRef.current.paused) videoRef.current.play();
             else videoRef.current.pause();
         }
-    }
+    };
 
     const handleLoad = (e: SyntheticEvent<HTMLVideoElement>) => {
         setIsReady(true);
-    }
+    };
 
     useEffect(() => {
         if (inView && isReady) videoRef?.current?.play();
@@ -44,13 +40,25 @@ const Video = ({ src }: { src: string }) => {
 
     return (
         <div ref={ref}>
-            <video onClick={togglePlay} onCanPlay={handleLoad} ref={videoRef} loop playsInline preload="auto" muted className="mx-auto rounded" style={{ maxHeight: 500 }} src={src} />
+            <video
+                poster={poster}
+                onClick={togglePlay}
+                onCanPlay={handleLoad}
+                ref={videoRef}
+                loop
+                playsInline
+                preload="metadata"
+                muted
+                className="mx-auto rounded"
+                style={{ maxHeight: 500 }}
+                src={src}
+            />
         </div>
     );
 };
 
 const VideoPost = (props: IPostData) => {
-    const { media, preview, secure_media_embed } = props;
+    const { media, preview, secure_media_embed, thumbnail } = props;
 
     const videoUrl =
         media?.reddit_video?.fallback_url ||
@@ -58,11 +66,11 @@ const VideoPost = (props: IPostData) => {
     const iframe = secure_media_embed?.media_domain_url;
     const width = secure_media_embed?.width;
     const height = secure_media_embed?.height;
-    
+
     return (
         <div className="rounded">
             {videoUrl ? (
-                <Video src={videoUrl} />
+                <Video src={videoUrl} poster={thumbnail} />
             ) : iframe ? (
                 <Iframe src={iframe} width={width} height={height} />
             ) : null}
