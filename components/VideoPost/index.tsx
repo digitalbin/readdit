@@ -17,7 +17,7 @@ const Iframe = ({
     </div>
 );
 
-const Video = ({ src, poster }: { src: string; poster: string }) => {
+const Video = ({ src }: { src: string; }) => {
     const videoRef = useRef<HTMLVideoElement | null>(null);
     const { ref, inView } = useInView({ threshold: 0.8 });
     const [isReady, setIsReady] = useState(false);
@@ -41,7 +41,6 @@ const Video = ({ src, poster }: { src: string; poster: string }) => {
     return (
         <div ref={ref}>
             <video
-                poster={poster}
                 onClick={togglePlay}
                 onCanPlay={handleLoad}
                 ref={videoRef}
@@ -49,8 +48,8 @@ const Video = ({ src, poster }: { src: string; poster: string }) => {
                 playsInline
                 preload="metadata"
                 muted
-                className="mx-auto rounded"
-                style={{ maxHeight: 500 }}
+                className="mx-auto rounded bg-subtle"
+                style={{ maxHeight: 500, maxWidth: '100%' }}
                 src={src}
             />
         </div>
@@ -70,7 +69,7 @@ const VideoPost = (props: IPostData) => {
     return (
         <div className="rounded">
             {videoUrl ? (
-                <Video src={videoUrl} poster={thumbnail} />
+                <Video src={videoUrl} />
             ) : iframe ? (
                 <Iframe src={iframe} width={width} height={height} />
             ) : null}
