@@ -1,4 +1,4 @@
-import { SyntheticEvent, useEffect, useState, useRef } from 'react';
+import { FC, useEffect, useState, useRef } from 'react';
 import { useInView } from 'react-intersection-observer';
 import type { IPostData } from 'types/post';
 import s from './style.module.css';
@@ -17,10 +17,18 @@ const Iframe = ({
     </div>
 );
 
-const Video = ({ src }: { src: string; }) => {
+interface VProps {
+    fallback_url: string;
+    width: number;
+    height: number;
+}
+
+const Video: FC<VProps> = (props) => {
+    const { fallback_url, width, height } = props;
     const videoRef = useRef<HTMLVideoElement | null>(null);
-    const { ref, inView } = useInView({ threshold: 0.8 });
-    const [isReady, setIsReady] = useState(false);
+    const containerRef = useRef<HTMLDivElement | null>(null);
+    const { ref: inViewRef, inView } = useInView({ threshold: 0.8 });
+    const [visited, setVisited] = useState(false);
 
     const togglePlay = () => {
         if (videoRef.current) {
@@ -29,29 +37,43 @@ const Video = ({ src }: { src: string; }) => {
         }
     };
 
-    const handleLoad = (e: SyntheticEvent<HTMLVideoElement>) => {
-        setIsReady(true);
-    };
+    useEffect(() => {
+        if (videoRef.current) {
+            if (inView) {
+                if (!visited) {
+                    videoRef.current.load();
+                    setVisited(true);
+                }
+                videoRef.current.play();
+            } else {
+                videoRef.current.pause();
+            }
+        }
+    }, [inView, visited]);
+
+    const [scale, setScale] = useState(1);
+    const maxHeight = 500;
 
     useEffect(() => {
-        if (inView && isReady) videoRef?.current?.play();
-        else videoRef?.current?.pause();
-    }, [inView, isReady]);
+        const cSize = containerRef.current?.getBoundingClientRect();
+        if (cSize) setScale(Math.min(maxHeight / height, cSize?.width / width));
+    }, [height, width]);
 
     return (
-        <div ref={ref}>
-            <video
-                onClick={togglePlay}
-                onCanPlay={handleLoad}
-                ref={videoRef}
-                loop
-                playsInline
-                preload="metadata"
-                muted
-                className="mx-auto rounded bg-subtle"
-                style={{ maxHeight: 500, maxWidth: '100%' }}
-                src={src}
-            />
+        <div ref={inViewRef}>
+            <div ref={containerRef}>
+                <video
+                    onClick={togglePlay}
+                    ref={videoRef}
+                    loop
+                    playsInline
+                    preload="none"
+                    muted
+                    style={{ width: width * scale, height: height * scale }}
+                    className="mx-auto rounded bg-subtle"
+                    src={fallback_url}
+                />
+            </div>
         </div>
     );
 };
@@ -59,17 +81,15 @@ const Video = ({ src }: { src: string; }) => {
 const VideoPost = (props: IPostData) => {
     const { media, preview, secure_media_embed, thumbnail } = props;
 
-    const videoUrl =
-        media?.reddit_video?.fallback_url ||
-        preview?.reddit_video_preview?.fallback_url;
+    const videoProps = media?.reddit_video || preview?.reddit_video_preview;
     const iframe = secure_media_embed?.media_domain_url;
     const width = secure_media_embed?.width;
     const height = secure_media_embed?.height;
 
     return (
         <div className="rounded">
-            {videoUrl ? (
-                <Video src={videoUrl} />
+            {videoProps ? (
+                <Video {...videoProps} />
             ) : iframe ? (
                 <Iframe src={iframe} width={width} height={height} />
             ) : null}
