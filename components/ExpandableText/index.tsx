@@ -9,7 +9,7 @@ const ExpandableText = ({ selftext }: { selftext: string }) => {
     });
 
     const handleExpand = () => {
-        setExpanded((pe) => !pe);
+        if (!expanded) setExpanded(true);
     };
 
     const paragraphs = selftext.split('\n');

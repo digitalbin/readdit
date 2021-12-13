@@ -20,6 +20,7 @@
       "@requests/*": ["requests/*"],
       "@utils/*": ["utils/*"],
       "@hooks/*": ["hooks/*"],
+      "@constants": ["constants/index"],
       "types": ["types/*"],
     },
   },

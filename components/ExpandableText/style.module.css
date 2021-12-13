@@ -1,10 +1,9 @@
 .wrapper {
     @apply
-        max-h-90
+        max-h-160
         -mt-sm
         overflow-hidden
-        relative
-        transition-all;
+        relative;
 }
 
 .wrapper:before {
@@ -14,17 +13,16 @@
         left-0
         right-0
         bottom-0
-        h-90
-        transition-opacity;
+        h-90;
     background-image: linear-gradient(to bottom, rgb(255 255 255 / 0), rgb(255 255 255 / 1) 60%);
 }
 
 .open {
-    max-height: 100vh;
+    max-height: unset;
 }
 
 .open:before {
-    @apply opacity-0;
+    @apply hidden;
 }
 
 .expand {
@@ -36,10 +34,9 @@
         bottom-sm
         left-0
         right-0
-        text-center
-        transition-opacity;
+        text-center;
 }
 
 .open .expand {
-    @apply opacity-0;
+    @apply hidden;
 }

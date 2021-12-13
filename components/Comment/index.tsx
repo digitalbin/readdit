@@ -12,11 +12,9 @@ interface CommentProps extends ICommentData {
 
 const Comment = (props: CommentProps) => {
     const [isOpen, setIsOpen] = useState(true);
-    const [visited, setVisited] = useState(false);
 
     const toggleOpen = () => {
         setIsOpen((pre) => !pre);
-        if (!visited) setVisited(true);
     };
 
     const { body_html, author, isLast, replies, ups, created } = props;
@@ -38,14 +36,13 @@ const Comment = (props: CommentProps) => {
         <li
             className={
                 classNames('relative', {
-                [s.thread]: isOpen && !isLast,
+                [s.thread]: !isLast,
             })}
         >
             <div
                 className={
                     classNames('flex mb-xl relative', {
                     [s.thread]: isOpen && (!isLast || hasReplies),
-                    'filter grayscale': visited,
                 })}
             >
                 <button onClick={toggleOpen} className={s.threadbtn} />

@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import { FC, useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import useSWRImmutable from 'swr/immutable';

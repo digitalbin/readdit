@@ -1,6 +1,7 @@
 import { FC, useEffect, useState, useRef } from 'react';
-import { useInView } from 'react-intersection-observer';
+import InView, { useInView } from 'react-intersection-observer';
 import type { IPostData } from 'types/post';
+import { MAX_HEIGHT } from '@constants';
 import s from './style.module.css';
 
 const Iframe = ({
@@ -11,11 +12,18 @@ const Iframe = ({
     src: string;
     width?: number;
     height?: number;
-}) => (
-    <div className={s.iframeWrapper}>
-        <iframe src={src} width={width} height={height} />
-    </div>
-);
+}) => {
+    const [render, setRender] = useState(false);
+    const { ref, inView } = useInView();
+    useEffect(() => {
+        if (inView) setRender(true);
+    }, [inView]);
+    return (
+        <div className={s.iframeWrapper} ref={ref}>
+            {inView && <iframe src={src} width={width} height={height} />}
+        </div>
+    )
+};
 
 interface VProps {
     fallback_url: string;
@@ -27,7 +35,7 @@ const Video: FC<VProps> = (props) => {
     const { fallback_url, width, height } = props;
     const videoRef = useRef<HTMLVideoElement | null>(null);
     const containerRef = useRef<HTMLDivElement | null>(null);
-    const { ref: inViewRef, inView } = useInView({ threshold: 0.8 });
+    const [inViewRef, inView] = useInView({ threshold: 0.33 });
     const [visited, setVisited] = useState(false);
 
     const togglePlay = () => {
@@ -52,11 +60,10 @@ const Video: FC<VProps> = (props) => {
     }, [inView, visited]);
 
     const [scale, setScale] = useState(1);
-    const maxHeight = 500;
 
     useEffect(() => {
         const cSize = containerRef.current?.getBoundingClientRect();
-        if (cSize) setScale(Math.min(maxHeight / height, cSize?.width / width));
+        if (cSize) setScale(Math.min(MAX_HEIGHT / height, cSize?.width / width));
     }, [height, width]);
 
     return (
@@ -87,13 +94,13 @@ const VideoPost = (props: IPostData) => {
     const height = secure_media_embed?.height;
 
     return (
-        <div className="rounded">
+        <>
             {videoProps ? (
                 <Video {...videoProps} />
             ) : iframe ? (
                 <Iframe src={iframe} width={width} height={height} />
             ) : null}
-        </div>
+        </>
     );
 };
 

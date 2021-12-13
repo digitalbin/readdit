@@ -1,5 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
-// import Image from 'next/image';
 import type { IPostData } from 'types/post';
 import s from './style.module.css';
 
@@ -16,7 +14,7 @@ const LinkPost = (props: IPostData) => {
     } catch {}
 
     return (
-        <a href={url_overridden_by_dest}>
+        <a href={url_overridden_by_dest} target="_blank" rel="noreferrer">
           <span className={s.link}>{url_overridden_by_dest}</span>
           {thumb && (
               <img

@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import { useEffect, FC } from 'react';
 import { useInView } from 'react-intersection-observer';
 

@@ -1,7 +1,8 @@
-/* eslint-disable @next/next/no-img-element */
 import { useState, useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 import type { IPostData } from 'types/post';
+import { MAX_HEIGHT } from '@constants';
+import classNames from 'classnames';
 
 const ImagePost = (props: IPostData) => {
     const {
@@ -9,24 +10,34 @@ const ImagePost = (props: IPostData) => {
         title
     } = props;
 
+    const [isOpen, setIsOpen] = useState(false);
     const [src, setSrc] = useState<string | null | undefined>(null);
     const { inView, ref } = useInView();
 
     useEffect(() => {
         if (inView && !src) setSrc(url_overridden_by_dest);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [inView])
+    }, [inView, src, url_overridden_by_dest])
+
+    const handleClick = () => setIsOpen(p => !p);
+
+    const className = classNames(
+        'rounded max-w-full max-h-full',
+        {
+            'fixed w-screen z-50': isOpen,
+        }
+    );
     
     return (
-        <figure ref={ref}>
+        <figure ref={ref} style={{ maxHeight: MAX_HEIGHT }} className="flex items-center justify-center">
             {src && (
                 <img
                     alt={title}
-                    src={url_overridden_by_dest}
-                    width="100%"
-                    className="rounded"
+                    src={src}
+                    className={className}
+                    onClick={handleClick}
                 />
             )}
+            {isOpen && <div className="bg-subtle bg-opacity-50 absolute inset-0 z-40" />}
         </figure>
     )
 }

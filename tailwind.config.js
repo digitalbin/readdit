@@ -18,6 +18,7 @@ module.exports = {
       '300': '300px',
       '400': '400px',
       '600': '600px',
+      'full': '100%',
     },
     textColor: {
       default: '#111',
@@ -61,6 +62,11 @@ module.exports = {
     boxShadow: {
       default: "rgb(64 64 64 / 10%) 0px 0px 15px, rgb(64 64 64 / 5%) 0px 0px 3px 1px",
     },
+    extend: {
+      maxHeight: {
+        post: '500px',
+      },
+    }
   },
   variants: {
     extend: {
