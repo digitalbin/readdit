@@ -105,7 +105,7 @@ const Post = (props: IPostData) => {
                     {postType === 'link' && <LinkPost {...props} />}
                     {selftext && <ExpandableText {...props} />}
                     <Link href={permalink}>
-                        <a className="text-subtle text-tiny mt-md">
+                        <a className="text-subtle text-tiny mt-md block">
                             <span className="mr-sm">{comments} comments</span>
                             {upvotes} upvotes
                         </a>
