@@ -45,7 +45,8 @@ const postPropList = [
   'thumbnail',
   'body_html',
   'author',
-  'replies'
+  'replies',
+  'media_metadata'
 ];
 
 interface IRes {

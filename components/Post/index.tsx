@@ -8,16 +8,19 @@ import LinkPost from '@components/LinkPost';
 import Avatar from '@components/Avatar';
 import type { IPostData } from 'types/post';
 
-function getPostType(hint: string) {
-    switch (hint) {
+function getPostType(props: IPostData) {
+    const { post_hint, media_metadata } = props;
+    switch (post_hint) {
         case 'image':
         case 'link':
-            return hint;
+            return post_hint;
         case 'rich:video':
         case 'hosted:video':
             return 'video';
-        default:
+        default: {
+            if (media_metadata) return 'image';
             return null;
+        }
     }
 }
 
@@ -33,15 +36,14 @@ const Post = (props: IPostData) => {
         ups,
         permalink,
         title,
-        post_hint = '',
     } = props;
-
+    
     const decodedTitle = he.decode(title);
 
     const isCrosspost = Boolean(crosspost_parent);
     const [parentProps] = crosspost_parent_list;
 
-    const postType = getPostType(post_hint);
+    const postType = getPostType(props);
 
     const timeAgo = timeSince(created);
 

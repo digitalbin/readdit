@@ -1,4 +1,5 @@
 import { FC, useEffect, useState } from 'react';
+import Image from 'next/image';
 import { useInView } from 'react-intersection-observer';
 import useSWRImmutable from 'swr/immutable';
 import { getSubredditIcon, getUserIcon } from '@requests/index';
@@ -29,10 +30,16 @@ const Avatar: FC<Props> = ({ type, name }) => {
     return (
         <figure ref={ref} className="mr-sm w-lg h-lg bg-subtle rounded-full overflow-hidden flex-none">
             {icon && (
-                <img
+                <Image
+                    width={20}
+                    height={20}
                     src={icon}
                     alt={`Avatar for ${prefix}/${name}`}
                 />
+                // <img
+                //     src={icon}
+                //     alt={`Avatar for ${prefix}/${name}`}
+                // />
             )}
         </figure>
     );

@@ -1,5 +1,5 @@
-import { FC, useEffect, useState, useRef } from 'react';
-import InView, { useInView } from 'react-intersection-observer';
+import { FC, useEffect, useState, useRef, useCallback } from 'react';
+import { useInView } from 'react-intersection-observer';
 import type { IPostData } from 'types/post';
 import { MAX_HEIGHT } from '@constants';
 import s from './style.module.css';
@@ -13,11 +13,7 @@ const Iframe = ({
     width?: number;
     height?: number;
 }) => {
-    const [render, setRender] = useState(false);
-    const { ref, inView } = useInView();
-    useEffect(() => {
-        if (inView) setRender(true);
-    }, [inView]);
+    const { ref, inView } = useInView({ triggerOnce: true });
     return (
         <div className={s.iframeWrapper} ref={ref}>
             {inView && <iframe src={src} width={width} height={height} />}
@@ -35,8 +31,8 @@ const Video: FC<VProps> = (props) => {
     const { fallback_url, width, height } = props;
     const videoRef = useRef<HTMLVideoElement | null>(null);
     const containerRef = useRef<HTMLDivElement | null>(null);
-    const [inViewRef, inView] = useInView({ threshold: 0.33 });
-    const [visited, setVisited] = useState(false);
+    const [loadInViewRef, shouldLoad] = useInView({ triggerOnce: true, threshold: 0 });
+    const [inViewRef, inView] = useInView({ threshold: 0.8 });
 
     const togglePlay = () => {
         if (videoRef.current) {
@@ -45,42 +41,46 @@ const Video: FC<VProps> = (props) => {
         }
     };
 
+    const refs = useCallback((node) => {
+        containerRef.current = node;
+        loadInViewRef(node)
+        inViewRef(node)
+    }, [inViewRef, loadInViewRef]);
+
     useEffect(() => {
         if (videoRef.current) {
-            if (inView) {
-                if (!visited) {
-                    videoRef.current.load();
-                    setVisited(true);
-                }
-                videoRef.current.play();
-            } else {
-                videoRef.current.pause();
-            }
+            if (inView && videoRef.current.readyState > 0) videoRef.current.play().catch((err) => { console.log(err) });
+            else videoRef.current.pause();
         }
-    }, [inView, visited]);
+    }, [inView, videoRef?.current?.readyState])
 
-    const [scale, setScale] = useState(1);
+    useEffect(() => {
+        if (videoRef.current && shouldLoad) videoRef.current.load();
+    }, [shouldLoad]);
+
+    const [size, setSize] = useState([0, 0]);
 
     useEffect(() => {
         const cSize = containerRef.current?.getBoundingClientRect();
-        if (cSize) setScale(Math.min(MAX_HEIGHT / height, cSize?.width / width));
+        if (cSize) {
+            const scale = Math.min(MAX_HEIGHT / height, cSize?.width / width);
+            setSize([width * scale, height * scale]);
+        }
     }, [height, width]);
 
     return (
-        <div ref={inViewRef}>
-            <div ref={containerRef}>
-                <video
-                    onClick={togglePlay}
-                    ref={videoRef}
-                    loop
-                    playsInline
-                    preload="none"
-                    muted
-                    style={{ width: width * scale, height: height * scale }}
-                    className="mx-auto rounded bg-subtle"
-                    src={fallback_url}
-                />
-            </div>
+        <div ref={refs}>
+            <video
+                onClick={togglePlay}
+                ref={videoRef}
+                loop
+                playsInline
+                preload="none"
+                muted
+                style={{ width: size[0], height: size[1] }}
+                className="mx-auto rounded bg-subtle"
+                src={fallback_url}
+            />
         </div>
     );
 };

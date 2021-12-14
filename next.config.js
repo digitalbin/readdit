@@ -1,3 +1,4 @@
+const domains = require('./allowedImageDomains');
 // const withPWA = require('next-pwa');
 // const runtimeCaching = require('next-pwa/cache');
 
@@ -14,5 +15,8 @@
 //   reactStrictMode: true,
 // })
 module.exports = {
+  images: {
+    domains,
+  },
   reactStrictMode: true,
 }
