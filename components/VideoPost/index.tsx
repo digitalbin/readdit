@@ -1,8 +1,11 @@
 import { FC, useEffect, useState, useRef, useCallback } from 'react';
+import dynamic from 'next/dynamic';
 import { useInView } from 'react-intersection-observer';
 import type { IPostData } from 'types/post';
 import { MAX_HEIGHT } from '@constants';
 import s from './style.module.css';
+
+const VideoPlayer = dynamic(() => import('@components/Video'), { ssr: false });
 
 const Iframe = ({
     src,
@@ -23,40 +26,15 @@ const Iframe = ({
 
 interface VProps {
     fallback_url: string;
+    dash_url: string;
+    hls_url: string;
     width: number;
     height: number;
 }
 
 const Video: FC<VProps> = (props) => {
-    const { fallback_url, width, height } = props;
-    const videoRef = useRef<HTMLVideoElement | null>(null);
+    const { dash_url, hls_url, fallback_url, width, height } = props;
     const containerRef = useRef<HTMLDivElement | null>(null);
-    const [loadInViewRef, shouldLoad] = useInView({ triggerOnce: true, threshold: 0 });
-    const [inViewRef, inView] = useInView({ threshold: 0.8 });
-
-    const togglePlay = () => {
-        if (videoRef.current) {
-            if (videoRef.current.paused) videoRef.current.play();
-            else videoRef.current.pause();
-        }
-    };
-
-    const refs = useCallback((node) => {
-        containerRef.current = node;
-        loadInViewRef(node)
-        inViewRef(node)
-    }, [inViewRef, loadInViewRef]);
-
-    useEffect(() => {
-        if (videoRef.current) {
-            if (inView && videoRef.current.readyState > 0) videoRef.current.play().catch((err) => { console.log(err) });
-            else videoRef.current.pause();
-        }
-    }, [inView, videoRef?.current?.readyState])
-
-    useEffect(() => {
-        if (videoRef.current && shouldLoad) videoRef.current.load();
-    }, [shouldLoad]);
 
     const [size, setSize] = useState([0, 0]);
 
@@ -69,17 +47,24 @@ const Video: FC<VProps> = (props) => {
     }, [height, width]);
 
     return (
-        <div ref={refs}>
-            <video
-                onClick={togglePlay}
-                ref={videoRef}
-                loop
-                playsInline
-                preload="none"
-                muted
-                style={{ width: size[0], height: size[1] }}
-                className="mx-auto rounded bg-subtle"
-                src={fallback_url}
+        <div ref={containerRef}>
+            <VideoPlayer
+                width={size[0]}
+                height={size[1]}
+                sources={[
+                    {
+                        src: dash_url,
+                        type: 'application/dash+xml'
+                    },
+                    {
+                        src: hls_url,
+                        type: 'application/x-mpegURL'
+                    },
+                    {
+                        src: fallback_url,
+                        type: 'video/mp4'
+                    }
+                ]}
             />
         </div>
     );

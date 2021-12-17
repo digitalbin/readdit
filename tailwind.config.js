@@ -12,6 +12,7 @@ module.exports = {
       md: '15px',
       lg: '20px',
       xl: '30px',
+      xxl: '35px',
       //larger explicit values 👇
       '90': '90px',
       '160': '160px',
@@ -29,7 +30,8 @@ module.exports = {
       default: '#fff',
       subtle: '#eee',
       inverse: '#111',
-      foreground: '#fafafa'
+      foreground: '#fafafa',
+      primary: '#74FF66'
     },
     fontSize: {
       tall: ['18px', '140%'],
@@ -49,6 +51,7 @@ module.exports = {
       primary: "#74FF66",
     },
     borderRadius: {
+      px: '1px',
       sm: '1rem',
       DEFAULT: '1.5rem',
       full: '9999px'
