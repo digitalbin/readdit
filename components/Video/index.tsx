@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useReducer, useRef } from 'react';
+import React, { BaseSyntheticEvent, useCallback, useEffect, useReducer, useRef } from 'react';
 import { useInView } from 'react-intersection-observer';
 import videojs, { VideoJsPlayer, VideoJsPlayerOptions } from 'video.js';
 import NoSSR from '@components/NoSSR';
@@ -114,7 +114,7 @@ const initialState = {
     percent: 0,
 };
 
-const reducer = (state, action: { type: string; value?: any }) => {
+const reducer = (state: any, action: { type: string; value?: any }) => {
     switch (action.type) {
         case 'ready':
             return { ...state, isReady: true };
@@ -142,7 +142,7 @@ const reducer = (state, action: { type: string; value?: any }) => {
     }
 };
 
-const VideoJS = (props) => {
+const VideoJS = (props: any) => {
     const [loadRef, loadView] = useInView({ threshold: 0, triggerOnce: true });
     const [playRef, playView] = useInView({ threshold: 0.8 });
     const videoRef = useRef<HTMLVideoElement>(null);
@@ -187,7 +187,7 @@ const VideoJS = (props) => {
         player.on('durationchange', () =>
             dispatch({ type: 'durationchange', value: player.duration() }),
         );
-
+        //@ts-ignore
         playerRef.current = player;
     }, [height, width, loadView]);
 
@@ -223,7 +223,7 @@ const VideoJS = (props) => {
         else player.requestFullscreen();
     };
 
-    const handleScrub = (e) => {
+    const handleScrub = (e: BaseSyntheticEvent) => {
         const player = playerRef.current;
         if (!player) return;
         const { value } = e.target;
@@ -280,7 +280,7 @@ const VideoJS = (props) => {
     );
 };
 
-const NoSSRVideo = (props) => (
+const NoSSRVideo = (props: any) => (
     <NoSSR>
         <VideoJS {...props} />
     </NoSSR>
