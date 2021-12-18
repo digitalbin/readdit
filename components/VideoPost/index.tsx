@@ -2,10 +2,9 @@ import { FC, useEffect, useState, useRef, useCallback } from 'react';
 import dynamic from 'next/dynamic';
 import { useInView } from 'react-intersection-observer';
 import type { IPostData } from 'types/post';
+import VideoPlayer from '@components/Video';
 import { MAX_HEIGHT } from '@constants';
 import s from './style.module.css';
-
-const VideoPlayer = dynamic(() => import('@components/Video'), { ssr: false });
 
 const Iframe = ({
     src,
