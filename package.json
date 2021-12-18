@@ -24,6 +24,7 @@
     "video.js": "^7.17.0"
   },
   "devDependencies": {
+    "@svgr/webpack": "^6.1.2",
     "@types/he": "^1.1.2",
     "@types/node": "16.11.11",
     "@types/react": "17.0.37",
