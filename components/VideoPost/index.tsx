@@ -1,5 +1,4 @@
 import { FC, useEffect, useState, useRef, useCallback } from 'react';
-import dynamic from 'next/dynamic';
 import { useInView } from 'react-intersection-observer';
 import type { IPostData } from 'types/post';
 import VideoPlayer from '@components/Video';

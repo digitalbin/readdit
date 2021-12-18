@@ -12,7 +12,6 @@
     "crypto-js": "^4.1.1",
     "he": "^1.2.0",
     "isomorphic-unfetch": "^3.1.0",
-    "just-intersect": "^4.0.2",
     "just-pick": "^4.0.1",
     "nanoid": "^3.1.30",
     "next": "12.0.4",
@@ -20,6 +19,7 @@
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-intersection-observer": "^8.32.5",
+    "sharp": "^0.29.3",
     "swr": "^1.1.0",
     "video.js": "^7.17.0"
   },

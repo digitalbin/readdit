@@ -1,7 +1,8 @@
-import React, { BaseSyntheticEvent, useCallback, useEffect, useReducer, useRef } from 'react';
+import React, { BaseSyntheticEvent, useCallback, useEffect, useReducer, useRef, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import videojs, { VideoJsPlayer, VideoJsPlayerOptions } from 'video.js';
 import NoSSR from '@components/NoSSR';
+import Scrubber from '@components/Scrubber';
 import { timeFormatter } from '@utils/index';
 import s from './style.module.css';
 
@@ -126,6 +127,8 @@ const reducer = (state: any, action: { type: string; value?: any }) => {
             return { ...state, isPlaying: true };
         case 'pause':
             return { ...state, isPlaying: false };
+        case 'percent':
+            return { ...state, percent: action.value };
         case 'timeupdate':
             return {
                 ...state,
@@ -148,7 +151,7 @@ const VideoJS = (props: any) => {
     const videoRef = useRef<HTMLVideoElement>(null);
     const playerRef = useRef<VideoJsPlayer>(null);
     const [state, dispatch] = useReducer(reducer, initialState);
-    const { onReady, sources, width, height } = props;
+    const { sources, width, height } = props;
 
     const containerRef = useCallback(
         (node) => {
@@ -198,10 +201,6 @@ const VideoJS = (props: any) => {
         else player.pause();
     }, [playView, state.isReady]);
 
-    // useEffect(() => {
-    //     console.log(state.isReady);
-    // }, [state.isReady])
-
     const togglePlay = () => {
         const player = playerRef.current;
         if (!player) return;
@@ -223,21 +222,29 @@ const VideoJS = (props: any) => {
         else player.requestFullscreen();
     };
 
-    const handleScrub = (e: BaseSyntheticEvent) => {
+    const handleScrub = (percent: number) => {
         const player = playerRef.current;
         if (!player) return;
-        const { value } = e.target;
-        const scrubTime = player.duration() * value;
-        player.currentTime(scrubTime);
-    };
+        player.currentTime(player.duration() * percent);
+    }
 
+    const [isHovering, setIsHovering] = useState(false);
+
+    const handleHover = (e: BaseSyntheticEvent) => {
+        const { type } = e;
+        setIsHovering(type === 'mouseenter');
+    }
+    // console.log(s);
+    
     return (
         <div
             ref={containerRef}
             className={s.container}
             style={{ width, height }}
+            onMouseEnter={handleHover}
+            onMouseLeave={handleHover}
         >
-            <video ref={videoRef} onClick={togglePlay}>
+            <video ref={videoRef} onClick={togglePlay} playsInline>
                 {sources.map(({ src, type }: { src: string; type: string }) => (
                     <source key={src} src={src} type={type} />
                 ))}
@@ -246,22 +253,7 @@ const VideoJS = (props: any) => {
                 <button onClick={togglePlay}>
                     {state.isPlaying ? <PauseIcon /> : <PlayIcon />}
                 </button>
-                <div className="flex-1 flex items-center relative">
-                    <progress
-                        value={state.percent / 100}
-                        className={s.progressBar}
-                    />
-                    <input
-                        className={s.scrubber}
-                        onChange={handleScrub}
-                        value={state.percent / 100}
-                        type="range"
-                        min="0"
-                        max="1"
-                        step="0.01"
-                    />
-                    {/* <div className="absolute bg-primary" style={{ width: `${state.percent}%`, height: 2 }} /> */}
-                </div>
+                <Scrubber value={state.percent / 100} onChangeEnd={handleScrub} />
                 <div
                     className="flex items-center justify-between px-xs text-tiny"
                     style={{ width: 88 }}
@@ -272,7 +264,7 @@ const VideoJS = (props: any) => {
                 <button onClick={toggleFullscreen}>
                     <ExpandIcon />
                 </button>
-                <button onClick={toggleMute}>
+                <button onClick={toggleMute} className={s.muteBtn}>
                     {state.isMuted ? <MuteIcon /> : <UnMuteIcon />}
                 </button>
             </div>
