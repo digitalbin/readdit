@@ -25,6 +25,10 @@ export function kFormatter(num: number = 0) {
   return Math.abs(num) > 999 ? Math.sign(num)*parseFloat((Math.abs(num)/1000).toFixed(1)) + 'k' : Math.sign(num)*Math.abs(num)
 }
 
+export function timeFormatter(seconds: number) {
+  return new Date(seconds * 1000).toISOString().substr(14, 5);
+}
+
 const postPropList = [
   'crosspost_parent',
   'crosspost_parent_list',

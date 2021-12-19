@@ -1,4 +1,5 @@
 import fetch from 'isomorphic-unfetch';
+import videojs, { VideoJsPlayerOptions } from 'video.js';
 
 const req = (url: string) =>
     fetch(url)

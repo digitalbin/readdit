@@ -1,0 +1,50 @@
+.container {
+    @apply relative mx-auto overflow-hidden rounded bg-subtle;
+}
+
+.container video {
+    @apply w-full max-h-full;
+}
+
+.controlBar {
+    @apply absolute
+        bottom-xs
+        left-xs
+        right-xs
+        bg-inverse
+        bg-opacity-80
+        rounded-b
+        rounded-t-px
+        h-xxl
+        text-inverse
+        flex
+        z-40;
+}
+
+.controlBar button {
+    @apply w-xxl flex-shrink-0 flex items-center justify-center;
+}
+
+@screen md {
+    .muteBtn {
+        @apply bg-inverse rounded-full bg-opacity-80;
+    }
+
+    .container .controlBar {
+        @apply bg-opacity-0;
+    }
+
+    .container .controlBar > *:not(.muteBtn) {
+        @apply opacity-0;
+    }
+
+    .container:hover .controlBar {
+        @apply bg-opacity-80;
+    }
+    .container:hover .controlBar > * {
+        @apply opacity-100;
+    }
+    .container:hover .muteBtn {
+        @apply bg-opacity-0;
+    }
+}

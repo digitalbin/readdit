@@ -2,6 +2,7 @@ import { useState } from 'react';
 import he from 'he';
 import classNames from 'classnames';
 import Avatar from '@components/Avatar';
+import NoSSR from '@components/NoSSR';
 import { ICommentData, IComment } from 'types/comment';
 import { kFormatter, timeSince } from '@utils/index';
 import s from './style.module.css';
@@ -55,7 +56,9 @@ const Comment = (props: CommentProps) => {
                         }}
                         className={classNames( s.comment, { 'hidden': !isOpen })}
                     />
-                    <p className="text-tiny text-subtle mt-sm">{timeSince(created)} • {kFormatter(ups)} upvotes</p>
+                    <NoSSR>
+                        <p className="text-tiny text-subtle mt-sm">{timeSince(created)} • {kFormatter(ups)} upvotes</p>
+                    </NoSSR>
                 </div>
             </div>
             {hasReplies && (

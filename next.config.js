@@ -15,8 +15,17 @@ const domains = require('./allowedImageDomains');
 //   reactStrictMode: true,
 // })
 module.exports = {
-  images: {
-    domains,
-  },
-  reactStrictMode: true,
-}
+    images: {
+        domains,
+    },
+    reactStrictMode: true,
+    webpack(config) {
+        config.module.rules.push({
+            test: /\.svg$/i,
+            issuer: /\.[jt]sx?$/,
+            use: ['@svgr/webpack'],
+        });
+
+        return config;
+    },
+};

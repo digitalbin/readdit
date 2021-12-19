@@ -13,3 +13,7 @@ body {
 h3 {
   @apply font-bold text-tall;
 }
+
+svg {
+  @apply pointer-events-none;
+}
