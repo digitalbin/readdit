@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useReducer, useRef, useState } from 'react';
+import React, { BaseSyntheticEvent, useCallback, useEffect, useReducer, useRef, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import videojs, { VideoJsPlayer, VideoJsPlayerOptions } from 'video.js';
 import NoSSR from '@components/NoSSR';
@@ -10,7 +10,6 @@ import ExpandIcon from '@icon/expand.svg'
 import MuteIcon from '@icon/mute.svg'
 import UnMuteIcon from '@icon/unmute.svg'
 import s from './style.module.css';
-
 
 const initialState = {
     isReady: false,
@@ -139,15 +138,16 @@ const VideoJS = (props: any) => {
             ref={containerRef}
             className={s.container}
             style={{ width, height }}
-            onPointerDown={togglePlay}
         >
-            <video ref={videoRef} playsInline>
-                {sources.map(({ src, type }: { src: string; type: string }) => (
-                    <source key={src} src={src} type={type} />
-                ))}
-            </video>
+            <div onPointerDown={togglePlay}>
+                <video ref={videoRef} playsInline>
+                    {sources.map(({ src, type }: { src: string; type: string }) => (
+                        <source key={src} src={src} type={type} />
+                    ))}
+                </video>
+            </div>
             <div className={s.controlBar}>
-                <button role="none" className="pointer-events-none">
+                <button role="button" onClick={togglePlay}>
                     {state.isPlaying ? <PauseIcon /> : <PlayIcon />}
                 </button>
                 <Scrubber value={state.percent / 100} onChangeEnd={handleScrub} />
@@ -158,10 +158,10 @@ const VideoJS = (props: any) => {
                     <time>{timeFormatter(state.time)}</time> /{' '}
                     <time>{timeFormatter(state.duration)}</time>
                 </div>
-                <button onClick={toggleFullscreen}>
+                <button role="button" onClick={toggleFullscreen}>
                     <ExpandIcon />
                 </button>
-                <button onClick={toggleMute} className={s.muteBtn}>
+                <button role="button" onClick={toggleMute} className={s.muteBtn}>
                     {state.isMuted ? <MuteIcon /> : <UnMuteIcon />}
                 </button>
             </div>
