@@ -10,6 +10,8 @@ import ExpandIcon from '@icon/expand.svg'
 import MuteIcon from '@icon/mute.svg'
 import UnMuteIcon from '@icon/unmute.svg'
 import s from './style.module.css';
+import 'videojs-youtube';
+import { MAX_HEIGHT } from '@constants';
 
 const initialState = {
     isReady: false,
@@ -56,14 +58,18 @@ const VideoJS = (props: any) => {
     const videoRef = useRef<HTMLVideoElement>(null);
     const playerRef = useRef<VideoJsPlayer | null>();
     const [state, dispatch] = useReducer(reducer, initialState);
+    const [size, setSize] = useState<number[]>([0, 0]);
     const { sources, width, height } = props;
-
+    
     const containerRef = useCallback(
         (node) => {
+            const containerWidth = node?.getBoundingClientRect().width;
+            const scale = Math.min(MAX_HEIGHT / height, containerWidth / width);
+            setSize([width * scale, height * scale]);
             loadRef(node);
             playRef(node);
         },
-        [loadRef, playRef],
+        [loadRef, playRef, width, height],
     );
 
     useEffect(() => {
@@ -72,8 +78,9 @@ const VideoJS = (props: any) => {
 
         const opts: VideoJsPlayerOptions = {
             loop: true,
-            width,
-            height,
+            width: size[0],
+            height: size[1],
+            techOrder: ['html5', 'youtube'],
             muted: true,
             preload: 'none',
             children: ['MediaLoader'],
@@ -97,7 +104,7 @@ const VideoJS = (props: any) => {
         );
 
         playerRef.current = player;
-    }, [height, width, loadView]);
+    }, [loadView, size]);
 
     useEffect(() => {
         const player = playerRef.current;
@@ -137,9 +144,8 @@ const VideoJS = (props: any) => {
         <div
             ref={containerRef}
             className={s.container}
-            style={{ width, height }}
         >
-            <div onPointerDown={togglePlay}>
+            <div onClick={togglePlay}>
                 <video ref={videoRef} playsInline>
                     {sources.map(({ src, type }: { src: string; type: string }) => (
                         <source key={src} src={src} type={type} />

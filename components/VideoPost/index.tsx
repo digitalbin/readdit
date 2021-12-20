@@ -4,6 +4,7 @@ import type { IPostData } from 'types/post';
 import VideoPlayer from '@components/Video';
 import { MAX_HEIGHT } from '@constants';
 import s from './style.module.css';
+import useScaleSize from '@hooks/useScaleSize';
 
 const Iframe = ({
     src,
@@ -23,63 +24,73 @@ const Iframe = ({
 };
 
 interface VProps {
+    width?: number;
+    height?: number;
+}
+
+interface IVideo extends VProps {
     fallback_url: string;
     dash_url: string;
     hls_url: string;
-    width: number;
-    height: number;
 }
 
-const Video: FC<VProps> = (props) => {
+const Video: FC<IVideo> = (props) => {
     const { dash_url, hls_url, fallback_url, width, height } = props;
-    const containerRef = useRef<HTMLDivElement | null>(null);
-
-    const [size, setSize] = useState([0, 0]);
-
-    useEffect(() => {
-        const cSize = containerRef.current?.getBoundingClientRect();
-        if (cSize) {
-            const scale = Math.min(MAX_HEIGHT / height, cSize?.width / width);
-            setSize([width * scale, height * scale]);
-        }
-    }, [height, width]);
-
     return (
-        <div ref={containerRef}>
-            <VideoPlayer
-                width={size[0]}
-                height={size[1]}
-                sources={[
-                    {
-                        src: dash_url,
-                        type: 'application/dash+xml'
-                    },
-                    {
-                        src: hls_url,
-                        type: 'application/x-mpegURL'
-                    },
-                    {
-                        src: fallback_url,
-                        type: 'video/mp4'
-                    }
-                ]}
-            />
-        </div>
+        <VideoPlayer
+            width={width}
+            height={height}
+            sources={[
+                {
+                    src: dash_url,
+                    type: 'application/dash+xml'
+                },
+                {
+                    src: hls_url,
+                    type: 'application/x-mpegURL'
+                },
+                {
+                    src: fallback_url,
+                    type: 'video/mp4'
+                }
+            ]}
+        />
     );
 };
 
-const VideoPost = (props: IPostData) => {
-    const { media, preview, secure_media_embed, thumbnail } = props;
+interface IYouTube extends VProps {
+    src: string;
+}
 
+const YouTubeVideo: FC<IYouTube> = (props) => {
+    const { width, height, src } = props;
+    return (
+        <VideoPlayer
+            width={width}
+            height={height}
+            sources={[{
+                type: 'video/youtube',
+                src
+            }]}
+        />
+    )
+}
+
+const VideoPost = (props: IPostData) => {
+    const { media, preview, secure_media_embed, url_overridden_by_dest, thumbnail } = props;
+    
     const videoProps = media?.reddit_video || preview?.reddit_video_preview;
+    const isYoutube = media?.type?.includes('youtube.com') && url_overridden_by_dest;
     const iframe = secure_media_embed?.media_domain_url;
     const width = secure_media_embed?.width;
     const height = secure_media_embed?.height;
-
+    
     return (
         <>
             {videoProps ? (
                 <Video {...videoProps} />
+            ) : isYoutube ? (
+                <YouTubeVideo {...media?.oembed} src={url_overridden_by_dest} />
             ) : iframe ? (
                 <Iframe src={iframe} width={width} height={height} />
             ) : null}

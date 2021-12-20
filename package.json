@@ -10,6 +10,7 @@
   "dependencies": {
     "classnames": "^2.3.1",
     "crypto-js": "^4.1.1",
+    "framer-motion": "^5.5.5",
     "he": "^1.2.0",
     "isomorphic-unfetch": "^3.1.0",
     "just-pick": "^4.0.1",
@@ -21,7 +22,8 @@
     "react-intersection-observer": "^8.32.5",
     "sharp": "^0.29.3",
     "swr": "^1.1.0",
-    "video.js": "^7.17.0"
+    "video.js": "^7.17.0",
+    "videojs-youtube": "^2.6.1"
   },
   "devDependencies": {
     "@svgr/webpack": "^6.1.2",
