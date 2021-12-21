@@ -1,10 +1,10 @@
 import '../styles/globals.css';
 import Head from 'next/head';
 import type { AppProps } from 'next/app';
-import { LazyMotion, domAnimation, m } from 'framer-motion';
+// import { LazyMotion, domAnimation, m } from 'framer-motion';
 import FeedHeader from '@components/FeedHeader';
 
-function MyApp({ Component, pageProps, router }: AppProps) {
+function MyApp({ Component, pageProps, /* router */ }: AppProps) {
     const postTitle = pageProps?.posts?.data?.children?.[0]?.data?.title;
     const title = `Vollie - ${postTitle || 'User ixperians'}`;
     
