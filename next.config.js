@@ -1,5 +1,5 @@
 const domains = require('./allowedImageDomains');
-// const withPWA = require('next-pwa');
+const withPWA = require('next-pwa');
 // const runtimeCaching = require('next-pwa/cache');
 
 /** @type {import('next').NextConfig} */
@@ -14,7 +14,11 @@ const domains = require('./allowedImageDomains');
 //   },
 //   reactStrictMode: true,
 // })
-module.exports = {
+const config = {
+    pwa: {
+        dest: 'public',
+        disable: process.env.NODE_ENV === 'development'
+    },
     images: {
         domains,
     },
@@ -29,3 +33,5 @@ module.exports = {
         return config;
     },
 };
+
+module.exports = withPWA(config);

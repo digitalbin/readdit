@@ -144,6 +144,10 @@ const VideoJS = (props: any) => {
         <div
             ref={containerRef}
             className={s.container}
+            style={{
+                width: size[0] || 'auto',
+                height: size[1] || 'auto'
+            }}
         >
             <div onClick={togglePlay}>
                 <video ref={videoRef} playsInline>
@@ -155,6 +159,7 @@ const VideoJS = (props: any) => {
             <div className={s.controlBar}>
                 <button role="button" onClick={togglePlay}>
                     {state.isPlaying ? <PauseIcon /> : <PlayIcon />}
+                    <span className="sr-only">Toggle play</span>
                 </button>
                 <Scrubber value={state.percent / 100} onChangeEnd={handleScrub} />
                 <div
@@ -166,9 +171,11 @@ const VideoJS = (props: any) => {
                 </div>
                 <button role="button" onClick={toggleFullscreen}>
                     <ExpandIcon />
+                    <span className="sr-only">Toggle fullscreen</span>
                 </button>
                 <button role="button" onClick={toggleMute} className={s.muteBtn}>
                     {state.isMuted ? <MuteIcon /> : <UnMuteIcon />}
+                    <span className="sr-only">Toggle mute</span>
                 </button>
             </div>
         </div>

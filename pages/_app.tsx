@@ -5,12 +5,17 @@ import { LazyMotion, domAnimation, m } from 'framer-motion';
 import FeedHeader from '@components/FeedHeader';
 
 function MyApp({ Component, pageProps, router }: AppProps) {
+    const postTitle = pageProps?.posts?.data?.children?.[0]?.data?.title;
+    const title = `Vollie - ${postTitle || 'User ixperians'}`;
+    
     return (
         <>
             <Head>
                 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+                <title>{title}</title>
+                <meta name="description" content="Vollie is a scumbag type of site that steals content from the generous open reddit json api, made purely to flex on potential employers with its sick user ixperians" />
             </Head>
-            <LazyMotion features={domAnimation}>
+            {/* <LazyMotion features={domAnimation}>
                 <m.div
                     className="mx-auto max-w-lg"
                     key={router.route}
@@ -24,13 +29,13 @@ function MyApp({ Component, pageProps, router }: AppProps) {
                             opacity: 1,
                         }
                     }}
-                >
+                > */}
                     <FeedHeader />
                         <main>
                             <Component {...pageProps} />
                         </main>
-                </m.div>
-            </LazyMotion>
+                {/* </m.div> */}
+            {/* </LazyMotion> */}
         </>
     );
 }

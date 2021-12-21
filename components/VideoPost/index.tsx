@@ -1,10 +1,8 @@
-import { FC, useEffect, useState, useRef, useCallback } from 'react';
+import { FC } from 'react';
 import { useInView } from 'react-intersection-observer';
 import type { IPostData } from 'types/post';
 import VideoPlayer from '@components/Video';
-import { MAX_HEIGHT } from '@constants';
 import s from './style.module.css';
-import useScaleSize from '@hooks/useScaleSize';
 
 const Iframe = ({
     src,

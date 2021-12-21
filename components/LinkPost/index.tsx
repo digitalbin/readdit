@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import type { IPostData } from 'types/post';
 import s from './style.module.css';
 
@@ -17,10 +18,13 @@ const LinkPost = (props: IPostData) => {
         <a href={url_overridden_by_dest} target="_blank" rel="noreferrer">
           <span className={s.link}>{url_overridden_by_dest}</span>
           {thumb && (
-              <img
+              <Image
                 src={thumb.toString()}
                 alt={title}
-                className="object-cover border rounded w-160 h-90"
+                className="rounded"
+                objectFit="cover"
+                width={160}
+                height={90}
               />
           )}
         </a>
